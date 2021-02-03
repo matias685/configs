@@ -9,8 +9,13 @@ function line-count
 	wc -l | string trim
 end
 
-# Custom function for listing installed programs
+# Custom function for counting installed programs
 function count-installed
+	dpkg -l | grep -c '^ii' | string trim
+end
+
+# Custom function for listing installed programs
+function list-installed
 	apt list --installed | string trim
 end
 
