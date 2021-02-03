@@ -42,7 +42,7 @@ end
 ### Abbreviations ###
 
 abbr apti 'sudo apt install'
-abbr aptinr 'sudo apt install --no-install-recommends'
+abbr aptinir 'sudo apt install --no-install-recommends'
 abbr aptc 'sudo apt clean'
 abbr aptu 'sudo apt update'
 abbr aptr 'sudo apt remove'
