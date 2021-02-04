@@ -1,0 +1,52 @@
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: true
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcdfilter
+
+Xterm*renderFont: true
+Xterm*faceName: xft:Monospace
+Xterm*faceSize: 14
+Xterm*urf8: 2
+Xterm*locale: true
+
+! scrollback lines
+Xterm*savelines: 2000
+
+! double-click to select whole URLs
+Xterm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+
+! Xterm Color theme
+Xterm*foreground: #f8f8f2
+Xterm*background: #282a36
+Xterm*cursorColor: #f8f8f2
+
+! Get rid of the scroll bar in URxvt
+URxvt.scrollBar: false
+
+! FONTS
+URxvt.font:xft:Monospace:pixelsize=18
+URxvt.boldfont:xft:Monospace-Bold:pixelsize=18
+
+! Dracula Xresources palette
+*.foreground: #F8F8F2
+*.background: #282A36
+*.color0:     #000000
+*.color8:     #4D4D4D
+*.color1:     #FF5555
+*.color9:     #FF6E67
+*.color2:     #50FA7B
+*.color10:    #5AF78E
+*.color3:     #F1FA8C
+*.color11:    #F4F99D
+*.color4:     #BD93F9
+*.color12:    #CAA9FA
+*.color5:     #FF79C6
+*.color13:    #FF92D0
+*.color6:     #8BE9FD
+*.color14:    #9AEDFE
+*.color7:     #BFBFBF
+*.color15:    #E6E6E6
+
