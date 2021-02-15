@@ -1,23 +1,13 @@
 syntax on
 
-set clipboard+=unnamedplus
-
-set nocompatible
 set encoding=utf-8
 
 " indentation and looks
 set number relativenumber
-set smartindent
-set smartcase
-set incsearch
 
-set splitbelow splitright       " better window splitting
 set wildmode=longest            " auto completion
 
 set nowrap
-
-" removing white spaces
-autocmd BufWritePre * %s/\s\+$//e
 
 " plugins
 call plug#begin('~/.vim/plugged')
