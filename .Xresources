@@ -1,52 +1,45 @@
 Xft.dpi: 96
-Xft.antialias: true
-Xft.hinting: true
-Xft.rgba: rgb
-Xft.autohint: true
-Xft.hintstyle: hintfull
-Xft.lcdfilter: lcdfilter
-
-Xterm*renderFont: true
-Xterm*faceName: xft:Monospace
-Xterm*faceSize: 14
-Xterm*urf8: 2
-Xterm*locale: true
-
-! scrollback lines
-Xterm*savelines: 2000
-
-! double-click to select whole URLs
-Xterm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
-
-! Xterm Color theme
-Xterm*foreground: #f8f8f2
-Xterm*background: #282a36
-Xterm*cursorColor: #f8f8f2
-
-! Get rid of the scroll bar in URxvt
+URxvt.font: xft:Hack:size=14
+URxvt.boldFont: xft:Hack-Bold:size=14
 URxvt.scrollBar: false
+URxvt.perl-ext-common:resize-font
+URxvt.keysym.C-minus:resize-font:smaller
+URxvt.keysym.C-equal:resize-font:bigger
+URxvt.keysym.C-0:resize-font:reset
 
-! FONTS
-URxvt.font:xft:Monospace:pixelsize=18
-URxvt.boldfont:xft:Monospace-Bold:pixelsize=18
+! special
+*.foreground:   #d8dee9
+*.background:   #1d1f21
+*.cursorColor:  #d8dee9
 
-! Dracula Xresources palette
-*.foreground: #F8F8F2
-*.background: #282A36
-*.color0:     #000000
-*.color8:     #4D4D4D
-*.color1:     #FF5555
-*.color9:     #FF6E67
-*.color2:     #50FA7B
-*.color10:    #5AF78E
-*.color3:     #F1FA8C
-*.color11:    #F4F99D
-*.color4:     #BD93F9
-*.color12:    #CAA9FA
-*.color5:     #FF79C6
-*.color13:    #FF92D0
-*.color6:     #8BE9FD
-*.color14:    #9AEDFE
-*.color7:     #BFBFBF
-*.color15:    #E6E6E6
+! black
+*.color0:       #313539
+*.color8:       #676f78
 
+! red
+*.color1:       #b02626
+*.color9:       #b55454
+
+! green
+*.color2:       #40a62f
+*.color10:      #78a670
+
+! yellow
+*.color3:       #f2e635
+*.color11:      #faf380
+
+! blue
+*.color4:       #314ad0
+*.color12:      #707fd0
+
+! magenta
+*.color5:       #b30ad0
+*.color13:      #c583d0
+
+! cyan
+*.color6:       #32d0fc
+*.color14:      #8adaf1
+
+! white
+*.color7:       #acadb1
+*.color15:      #e0e3e7
