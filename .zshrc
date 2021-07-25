@@ -14,19 +14,21 @@ PROMPT='%F{blue}%1~%f %# '
 # Autocomplete with case insensitivity
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-# Aliases
-alias pacin='sudo pacman -S'
-alias pacrm='sudo pacman -Rns'
-alias pacq='pacman -Q'
-alias pacqi='pacman -Qi'
-alias pacup='sudo pacman -Syu'
+# Alias
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias untar='tar -xzvf'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias v='nvim'
-alias sv='sudo nvim'
+alias ll='ls -l'
+alias untar='tar -xzvf'
+alias v='vim'
+alias sv='sudo vim'
+alias poweroff='sudo shutdown now'
+alias sai='sudo apt install'
+alias sainir='sudo apt install --no-install-recommends'
+alias saud='sudo apt update'
+alias saug='sudo apt upgrade'
+alias sauu='sudo apt update && sudo apt upgrade'
 
 autoload -Uz compinit
 compinit
