@@ -2,13 +2,13 @@ Xft.dpi: 96
 URxvt.font: xft:Hack:size=14
 URxvt.boldFont: xft:Hack-Bold:size=14
 URxvt.scrollBar: false
-URxvt.perl-ext-common:resize-font
-URxvt.keysym.C-minus:resize-font:smaller
-URxvt.keysym.C-equal:resize-font:bigger
-URxvt.keysym.C-0:resize-font:reset
+URxvt.perl-ext-common: default,resize-font
+URxvt.keysym.C-j: resize-font:smaller
+URxvt.keysym.C-k: resize-font:bigger
+URxvt.keysym.C-equal: resize-font:reset
 
 ! special
-*.foreground:   #c5c8c6
+*.foreground:   #ffffff
 *.background:   #1d1f21
 *.cursorColor:  #c5c8c6
 
@@ -41,5 +41,5 @@ URxvt.keysym.C-0:resize-font:reset
 *.color14:      #3971ed
 
 ! white
-*.color7:       #c5c8c6
+*.color7:       #ffffff
 *.color15:      #ffffff
