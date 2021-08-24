@@ -1,11 +1,12 @@
 Xft.dpi: 96
-URxvt.font: xft:Hack:size=14
-URxvt.boldFont: xft:Hack-Bold:size=14
+URxvt.font: xft:Hack:size=14,xft:FontAwesome:size=9
 URxvt.scrollBar: false
 URxvt.perl-ext-common: default,resize-font
 URxvt.keysym.C-j: resize-font:smaller
 URxvt.keysym.C-k: resize-font:bigger
 URxvt.keysym.C-equal: resize-font:reset
+URxvt.depth: 32
+URxvt.background: rgba:1111/1111/1111/dddd
 
 ! special
 *.foreground:   #ffffff
