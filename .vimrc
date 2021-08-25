@@ -29,6 +29,7 @@ set encoding=utf-8
 set nohlsearch			        " turns off highlight after enter is pressed when searching
 
 set mouse=a			            " mouse scrolling
+set ttymouse=sgr
 
 set clipboard+=unnamedplus	    " sets clipboard so you can paste stuff from outside vim into vim
 
@@ -54,7 +55,7 @@ Plug 'vim-scripts/AutoComplPop'
 call plug#end()
 
 
-let g:airline_theme='deus'
+let g:airline_theme='violet'
 "let g:airline_theme='minimalist'
 
 set laststatus=2		        " always show statusline
