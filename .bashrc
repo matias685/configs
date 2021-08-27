@@ -1,5 +1,3 @@
-
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -32,7 +30,6 @@ if [ -n "$force_color_prompt" ]; then
   fi
 fi
 
-
 # Get repo info
 if [ "$color_prompt" = yes ]; then
   PS1='\[\033[01;34m\]\w\[\033[00m\] $ '
@@ -41,15 +38,20 @@ else
 fi
 unset color_prompt force_color_prompt
 
+# ls aliases
 alias ls='ls --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias ls.='ls -A | egrep "^\."'
 
+# color output for grep
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+
+#cd command
+alias ..='cd ..'
 
 # xbps
 alias xin='sudo xbps-install -S'
@@ -58,8 +60,15 @@ alias xup='sudo xbps-install -Su'
 alias xq='xbps-query -Rs'
 alias pkgs='xbps-query -l | wc -l'
 
+# poweroff and reboot
+alias poweroff='loginctl poweroff'
+alias reboot='loginctl reboot'
+
 # vim
 alias sv='sudo nvim'
+alias v='nvim'
+
+alias moc='mocp'
 
 bind 'set colored-stats on'
 bind 'set completion-ignore-case on'
