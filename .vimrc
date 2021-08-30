@@ -53,9 +53,7 @@ Plug 'vim-scripts/AutoComplPop'
 
 call plug#end()
 
-
 let g:airline_theme='violet'
-"let g:airline_theme='minimalist'
 
 set laststatus=2		        " always show statusline
 
