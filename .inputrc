@@ -1,0 +1,15 @@
+$include /etc/inputrc
+
+set colored-stats on
+set show-all-if-ambiguous on
+set completion-ignore-case on
+set disable-completion off
+set convert-meta on
+set history-size 1000
+set mark-directories on
+set mark-modified-lines off
+set mark-symlinked-directories on
+set menu-complete-display-prefix off
+set show-all-if-unmodified on
+set visible-stats on
+TAB:menu-complete

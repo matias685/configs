@@ -39,24 +39,30 @@ fi
 unset color_prompt force_color_prompt
 
 # ls aliases
-alias ls='ls --color=auto'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+alias ls='ls --quoting-style=literal -pq --time-style=iso --color=auto --group-directories-first --show-control-chars'
+alias lsl='ls -nph'
+alias lsla='ls -Anph'
+alias lsa='ls -A'
 alias ls.='ls -A | egrep "^\."'
 
 # color output for grep
-alias grep='grep --color=auto'
+alias grep='grep -sI --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+
+alias rm='rm -v'
+alias cp='cp -v'
+alias mv='mv -v'
+
+alias dl='cd "$HOME"/Downloads'
 
 #cd command
 alias ..='cd ..'
 
 # xbps
-alias xin='sudo xbps-install -S'
-alias xrm='sudo xbps-remove -R'
-alias xup='sudo xbps-install -Su'
+alias xin='doas xbps-install -S'
+alias xrm='doas xbps-remove -R'
+alias xup='doas xbps-install -Su'
 alias xq='xbps-query -Rs'
 alias pkgs='xbps-query -l | wc -l'
 
@@ -65,11 +71,7 @@ alias poweroff='loginctl poweroff'
 alias reboot='loginctl reboot'
 
 # vim
-alias sv='sudo nvim'
-alias v='nvim'
+alias sudoedit='doas vim'
+alias v='vim'
 
 alias moc='mocp'
-
-bind 'set colored-stats on'
-bind 'set completion-ignore-case on'
-bind 'TAB:menu-complete'
