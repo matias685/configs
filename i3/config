@@ -1,17 +1,10 @@
-
-# Should you change your keyboard layout some time, delete
-# this file and re-run i3-config-wizard(1).
-#
-
-# i3 config file (v4)
-#
-# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+# i3 config file
 
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Hack 10
+#font pango:Hack 10
 
 gaps inner 20
 gaps outer 0
@@ -22,7 +15,7 @@ default_floating_border pixel 2
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
+font pango:DejaVu Sans Mono 8
 
 
 #-------------------------------------------------------------------SOME COLORS
@@ -36,7 +29,7 @@ client.placeholder       #222222  #000000  #000000  #222222  #222222
 
 client.background        #000000
 
-# Use pactl to adjust volume in PulseAudio.
+#---------------------------------------------------------------------VOLUME
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
@@ -46,6 +39,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 #---------------------------------------------------------------WINDOWCLASS
 for_window [class="^Pcmanfm$"] floating enable
 for_window [class="vlc"] floating enable
+for_window [class="^Spotify$"] floating enable
+for_window [window_role="About"] floating enable
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -56,10 +51,8 @@ bindsym $mod+Return exec alacritty
 # kill focused window
 bindsym $mod+c kill
 
-# start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run -fn 'Inconsolata 12'
+# start rofi (a program launcher)
 bindsym $mod+d exec rofi -show run -font "Hack 12" 
-
 
 # change focus
 bindsym $mod+h focus left
@@ -77,8 +70,7 @@ bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
-
-# alternatively, you can use the cursor keys:
+# arrow keys 
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -171,7 +163,7 @@ bindsym Shift+Right resize shrink width 10 px or 10 ppt
 bar {
         position top
         status_command i3blocks -c ~/.config/i3blocks/config 
-        font pango:Ubuntu Mono 15
+        font pango:DejaVu Sans Mono 12
         colors {
 		background #181818
 		separator #ebdbb2
@@ -193,3 +185,5 @@ exec_always dunst &
 
 # Reload Xresources
 exec_always xrdb ~/.Xresources
+
+bindsym $mod+Ctrl+Shift+l exec lock
