@@ -1,1 +1,45 @@
+# i3blocks configuration file
+#
+# The i3blocks man page describes the usage of the binary,
+# and its website describes the configuration:
+#
+#     https://vivien.github.io/i3blocks
 
+
+# Global properties
+separator=true
+separator_block_width=15
+
+#[documentation]
+#full_text=Documentation
+#website=https://vivien.github.io/i3blocks
+#command=xdg-open "$website"
+#color=#f12711
+
+#[greetings]
+#color=#f5af19
+#command=echo "Hello, $U!"
+#interval=once
+#
+#[packages]
+#command=echo :package: $(xbps-query -l | wc -l)
+#interval=1
+
+[layout]
+command=/home/matias/.config/i3blocks/xkb_layout/xkb_layout
+font=monospace
+interval=persist
+markup=pango
+
+[volume]
+command=/home/matias/.config/i3blocks/volume/volume
+LABEL=♪ 
+#LABEL=VOL 
+interval=once
+signal=10
+#STEP=5%
+#MIXER=[determined automatically]
+
+[time]
+command=date '+%d/%m/%Y %H:%M'
+interval=60
