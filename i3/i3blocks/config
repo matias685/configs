@@ -1,29 +1,8 @@
 # i3blocks configuration file
-#
-# The i3blocks man page describes the usage of the binary,
-# and its website describes the configuration:
-#
-#     https://vivien.github.io/i3blocks
-
 
 # Global properties
 separator=true
 separator_block_width=15
-
-#[documentation]
-#full_text=Documentation
-#website=https://vivien.github.io/i3blocks
-#command=xdg-open "$website"
-#color=#f12711
-
-#[greetings]
-#color=#f5af19
-#command=echo "Hello, $U!"
-#interval=once
-#
-#[packages]
-#command=echo :package: $(xbps-query -l | wc -l)
-#interval=1
 
 [layout]
 command=/home/matias/.config/i3blocks/xkb_layout/xkb_layout
@@ -31,15 +10,33 @@ font=monospace
 interval=persist
 markup=pango
 
+[pacman-updates]
+command=/home/matias/.config/i3blocks/arch-update/arch-update
+interval= 3600
+WATCH=^linux.* ^pacman.*
+BASE_COLOR=#5fff5f
+UPDATE_COLOR=#FFFF85
+markup=pango
+LABEL=Updates: 
+LABEL= 
+
+[cpu_usage]
+command=/home/matias/.config/i3blocks/cpu_usage/cpu_usage
+interval=10
+LABEL= 
+
 [volume]
 command=/home/matias/.config/i3blocks/volume/volume
-LABEL=♪ 
-#LABEL=VOL 
-interval=once
-signal=10
-#STEP=5%
-#MIXER=[determined automatically]
+LABEL= 
+interval=5
+signal=1
 
-[time]
-command=date '+%d/%m/%Y %H:%M'
+[date]
+label= 
+command=date '+%d/%m/%Y'
+interval=70000
+
+[hour]
+label= 
+command=date '+%H:%M '
 interval=60
