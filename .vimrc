@@ -19,6 +19,7 @@ set number			            " shows line numbers
 set relativenumber		        " shows line numbers relative to current position
 
 set nowrap			            " does not allow lines to wrap
+set noswapfile
 
 set ignorecase			        " ignore case when searching
 set smartcase			        " turns on case sensitive search when letters are capitalized
