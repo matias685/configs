@@ -1,4 +1,4 @@
-#
+
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
 #
@@ -43,17 +43,23 @@ bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -R
 bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+#---------------------------------------------------------------WINDOWCLASS
+for_window [class="^Pcmanfm$"] floating enable
+for_window [class="vlc"] floating enable
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec urxvt 
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+c kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -fn 'Inconsolata 12'
+#bindsym $mod+d exec dmenu_run -fn 'Inconsolata 12'
+bindsym $mod+d exec rofi -show run -font "Hack 12" 
+
 
 # change focus
 bindsym $mod+h focus left
@@ -148,10 +154,10 @@ bindsym $mod+F2 restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
-bindsym Shift+j resize shrink height 10 px or 10 ppt
-bindsym Shift+k resize grow height 10 px or 10 ppt
-bindsym Shift+l resize shrink width 10 px or 10 ppt
-bindsym Shift+h resize grow width 10 px or 10 ppt
+bindsym $mod+Ctrl+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+k resize grow height 10 px or 10 ppt
+bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
+bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
 
 # same bindings, but for the arrow keys
 bindsym Shift+Left resize grow width 10 px or 10 ppt
@@ -181,6 +187,9 @@ exec_always sh ~/.fehbg
 
 # picom
 exec_always picom --config /home/matias/.config/picom/picom.conf &
+
+# notification daemon
+exec_always dunst &
 
 # Reload Xresources
 exec_always xrdb ~/.Xresources
