@@ -16,13 +16,25 @@ font pango:Hack 10
 gaps inner 20
 gaps outer 0
 
-default_border normal 3 px
-default_border pixel 3
-default_floating_border pixel 3
+default_border normal 2 px
+default_border pixel 2
+default_floating_border pixel 2
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
+
+
+#-------------------------------------------------------------------SOME COLORS
+
+# class                  border   backgr.  text     indic.   child_border
+client.focused           #f8f8f2  #000000  #FFFFFF  #555555  #f8f8f2
+client.focused_inactive  #222222  #000000  #888888  #222222  #222222
+client.unfocused         #222222  #000000  #555555  #222222  #222222
+client.urgent            #222222  #000000  #ff0000  #222222  #222222
+client.placeholder       #222222  #000000  #000000  #222222  #222222
+
+client.background        #000000
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -188,7 +200,7 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         position top
-        status_command i3status --config ~/.config/i3status/i3status.conf
+        status_command i3blocks -c ~/.config/i3blocks/config 
         font pango:Ubuntu Mono 13
         colors {
 		background #181818
