@@ -5,8 +5,9 @@ URxvt.perl-ext-common: default,resize-font
 URxvt.keysym.C-j: resize-font:smaller
 URxvt.keysym.C-k: resize-font:bigger
 URxvt.keysym.C-equal: resize-font:reset
-URxvt.depth: 32
-URxvt.background: rgba:1111/1111/1111/dddd
+! transparency
+*URxvt.depth: 32
+*URxvt.background: rgba:1111/1111/1111/dddd
 
 ! special
 *.foreground:   #ffffff
