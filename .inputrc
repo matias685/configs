@@ -4,7 +4,6 @@ set colored-stats on
 set show-all-if-ambiguous on
 set completion-ignore-case on
 set disable-completion off
-set convert-meta on
 set history-size 1000
 set mark-directories on
 set mark-modified-lines off
