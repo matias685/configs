@@ -1,3 +1,5 @@
+# wm independent hotkeys
+
 # terminal emulator
 super + Return
 	alacritty
@@ -20,23 +22,29 @@ super + alt + q
 
 # make sxhkd reload its configuration files:
 super + Escape
-	pkill -USR1 -x sxhkd
+	pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Reloaded config' 
 
 #restart bspwm
-super + shift + r 
-	bspc wm -r
+super + shift + r
+	bspc wm -r; notify-send 'bspwm' 'Reloaded config'
 
 # close and kill a window
 super + q
 	bspc node -k
 super + c
     bspc node -c
-    
+
+# Rotate tree
+super + shift + {d,a}
+    bspc node @/ -C {forward,backward}
+
 # Enable multimedia keys
 XF86AudioMute
     pactl set-sink-mute 0 toggle
+
 XF86AudioRaiseVolume
     pactl set-sink-volume 0 +5%
+
 XF86AudioLowerVolume
     pactl set-sink-volume 0 -5%
 
@@ -52,11 +60,14 @@ super + y
 super + g
 	bspc node -s biggest.window
 
+
 # Use PgUp and PgDown to switch between active workspaces
 super + Next
     bspc desktop next.occupied -f
 super + Prior
     bspc desktop prev.occupied -f
+
+# state/flags
 
 # set the window state
 super + {t,shift + t,s,f}
@@ -65,6 +76,8 @@ super + {t,shift + t,s,f}
 # set the node flags
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
+
+# focus/swap
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -96,6 +109,8 @@ super + {o,i}
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
+# preselect
+
 # preselect the direction
 super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
@@ -121,3 +136,7 @@ alt + k
     sh $HOME/.config/bspwm/resize/shrinky.sh
 alt + j
     sh $HOME/.config/bspwm/resize/expandy.sh
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
