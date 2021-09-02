@@ -40,7 +40,7 @@ bspc config window_gap 12
 #-----------------------------------------------------------------WORKSPACES
 bspc monitor -d I II III IV V VI 
 
-#----------------------------------------------------------------WINDOW RULES
+#-----------------------------------------------------------------WINDOW RULES
 bspc rule -a 'Pcmanfm' state=floating
 bspc rule -a 'Sxiv' state=floating 
 bspc rule -a 'Firefox:Toolkit' sticky=on state=floating
