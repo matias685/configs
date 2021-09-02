@@ -8,11 +8,15 @@ HISTCONTROL=ignoreboth
 
 shopt -s histappend
 
+export EDITOR="vim"
+
 HISTSIZE=1000
 HISTFILESIZE=2000
 
 shopt -s checkwinsize
 
+PATH=$PATH:~/.local/bin/
+PATH=$PATH:~/.local/bin/statusbar/
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 	xterm-color|*-256color) color_prompt=yes;;
@@ -50,11 +54,14 @@ alias grep='grep -sI --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+# verbose commands
 alias rm='rm -v'
 alias cp='cp -v'
 alias mv='mv -v'
 
+# directory shortcuts
 alias dl='cd "$HOME"/Downloads'
+alias conf='cd "$HOME"/.config'
 
 #cd command
 alias ..='cd ..'
@@ -64,7 +71,9 @@ alias xin='doas xbps-install -S'
 alias xrm='doas xbps-remove -R'
 alias xup='doas xbps-install -Su'
 alias xq='xbps-query -Rs'
+alias pkgi='xbps-query -S'
 alias pkgs='xbps-query -l | wc -l'
+alias lspkg='xbps-query -l'
 
 # poweroff and reboot
 alias poweroff='loginctl poweroff'
@@ -74,4 +83,5 @@ alias reboot='loginctl reboot'
 alias sudoedit='doas vim'
 alias v='vim'
 
+alias nnn='nnn -Dde'
 alias moc='mocp'
