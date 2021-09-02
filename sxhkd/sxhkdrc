@@ -9,27 +9,41 @@ super + Return
 super + shift + f
     pcmanfm
 
+# screen lock 
+super + F12
+    lock
+
 # program launcher
 super + @space
-     rofi -show run -font "Hack 12"
-#    dmenu_run	
+     rofi -show drun -font "Hack 12"
 
-super + alt + Escape
+# kill xorg
+super + alt + q
   bspc quit
 
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
 
-# bspwm hotkeys
-
 #restart bspwm
 super + shift + w 
 	bspc wm -r
 
-# close and kill
-super + c
+# close and kill a window
+super + q
 	bspc node -k
+super + c
+    bspc node -c
+
+# Enable multimedia keys
+XF86AudioMute
+    pactl set-sink-mute 0 toggle
+
+XF86AudioRaiseVolume
+    pactl set-sink-volume 0 +5%
+
+XF86AudioLowerVolume
+    pactl set-sink-volume 0 -5%
 
 # alternate between the tiled and monocle layout
 super + m
@@ -43,9 +57,14 @@ super + y
 super + g
 	bspc node -s biggest.window
 
-#
+
+# Use PgUp and PgDown to switch between active workspaces
+super + Next
+    bspc desktop next.occupied -f
+super + Prior
+    bspc desktop prev.occupied -f
+
 # state/flags
-#
 
 # set the window state
 super + {t,shift + t,s,f}
@@ -55,9 +74,7 @@ super + {t,shift + t,s,f}
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
 
-#
 # focus/swap
-#
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -67,7 +84,7 @@ super + {_,shift + }{h,j,k,l}
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
 
-# # Focus on window in direction
+# Focus on window in direction
  super + {h,j,k,l}
  	bspc node -f {west,south,north,east}
 
@@ -89,9 +106,7 @@ super + {o,i}
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
-#
 # preselect
-#
 
 # preselect the direction
 super + ctrl + {h,j,k,l}
@@ -109,9 +124,9 @@ super + ctrl + space
 super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
-#
-# move/resize
- i3 like resizing
+# move/resize 
+
+# better resizing keys
 alt + h
     sh $HOME/.config/bspwm/resize/shrinkx.sh
 alt + l
@@ -120,7 +135,7 @@ alt + k
     sh $HOME/.config/bspwm/resize/shrinky.sh
 alt + j
     sh $HOME/.config/bspwm/resize/expandy.sh
-#
+
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
