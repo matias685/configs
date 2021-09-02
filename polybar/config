@@ -99,7 +99,7 @@ interval = 10
 format-prefix = "🧠 "
 #format-underline = #0a6cf5
 
-[modules/player-moc]
+[module/player-moc]
 type = custom/script
 exec = ~/polybar-scripts/player-moc.sh 
 interval = 3
