@@ -17,7 +17,7 @@ super + @space
      rofi -show drun -font "Hack 12"
 
 # kill xorg
-super + alt + q
+super + shift + q
   bspc quit
 
 # make sxhkd reload its configuration files:
