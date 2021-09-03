@@ -1,1 +1,37 @@
+#!/bin/sh 
+
+# Use $XINITRC variable if file exists.
+[ -f "$XINITRC" ] && alias startx="startx $XINITRC"
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+       cp="cp -iv" \
+       mv="mv -iv" \
+       rm="rm -vI" \
+       mkd="mkdir -pv" \
+
+# Colorize commands when possible
+alias \
+       ls="ls -hN --color=auto --group-directories-first" \
+       grep="grep --color=auto" \
+       diff="diff --color=auto" \
+       ccat="highlight --out-format=ansi"
+
+# These commands are too long!
+alias \
+        ka="killall" \
+        g="git" \
+        sdn="sudo shutdown -h now" \
+        nnn="nnn -Dde" \
+        e="$EDITOR" \
+        v="$EDITOR"
+# Pacman
+alias \
+        pacup="sudo pacman -Syu" \
+        pacin="sudo pacman -S" \
+        pacrm="sudo pacman -Rns" \
+        pacq="pacman -Q" \
+        pacqi="pacman -Qi" \
+        pacs="pacman -Ss"
+
 
