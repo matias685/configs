@@ -51,18 +51,13 @@ set clipboard+=unnamedplus	    " sets clipboard so you can paste stuff from outs
 
 set completeopt=menuone,longest	" auto complete menu
 
-" plugins
+" load plugins
 call plug#begin('~/.vim/plugged')
 
 " colorscheme and theme
- Plug 'itchyny/lightline.vim'           " Lightline statusbar
- Plug 'frazrepo/vim-rainbow'
- Plug 'junegunn/vim-emoji'              " Vim needs emojis!
-
-
- let g:lightline = {
-           \ 'colorscheme': 'wombat',
-       \ }
+Plug 'itchyny/lightline.vim'           " Lightline statusbar
+Plug 'frazrepo/vim-rainbow'
+Plug 'junegunn/vim-emoji'              " Vim needs emojis!
 
 " Preview colors in vim
 Plug 'ap/vim-css-color'
@@ -71,5 +66,9 @@ Plug 'ap/vim-css-color'
 Plug 'vim-scripts/AutoComplPop'
 
 call plug#end()
+
+let g:lightline = {
+           \ 'colorscheme': 'wombat',
+       \ }
 
 set laststatus=2		        " always show statusline
