@@ -1,5 +1,5 @@
 Xft.dpi: 96
-URxvt.font: xft:Hack:size=14,xft:FontAwesome:size=9
+URxvt.font: xft:Hack:size=14,xft:FontAwesome:size=12
 URxvt.scrollBar: false
 URxvt.perl-ext-common: default,resize-font
 URxvt.keysym.C-j: resize-font:smaller
@@ -27,7 +27,7 @@ URxvt.keysym.C-equal: resize-font:reset
 *.color10:      #33d17a
 
 ! yellow
-*.color3:       #a2734c
+*.color3:       #FAD02C
 *.color11:      #e9ad0c
 
 ! blue
