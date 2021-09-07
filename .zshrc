@@ -40,7 +40,7 @@ alias egrep='egrep --color=auto'
 #alias lsa='ls -A'
 #alias ls.='ls -A | egrep "^\."'
 
-alias ls='exa -alh --color=always --group-directories-first'
+alias ls='exa -lh --color=always --group-directories-first'
 alias la='exa -a --color=always --group-directories-first'
 alias ll='exa -l --color=always --group-directories-first'
 alias lt='exa -aT --color=always --group-directories-first'
