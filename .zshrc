@@ -1,11 +1,13 @@
 autoload -U colors && colors # Load colors 
 setopt autocd
+unsetopt nomatch
 stty stop undef
 
 export EDITOR='vim'
 
 # Custom prompt
-PROMPT='%F{blue}%1~%f %# '
+zstyle ':vcs_info:git:*' formats ' 🐙 %b '
+PROMPT='[%F{magenta}%n%F{yellow}🚀%F{cyan}%M %F{white}%~%B%f%b]%F{green}$ '
 
 # History in cache directory
 HISTSIZE=10000
@@ -29,34 +31,33 @@ alias mv='mv -v'
 alias mkd='mkdir -pv'
 
 # Adding colors
-alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 
 # ls commands
-alias lsl='ls -nph'
-alias lsla='ls -Anph'
-alias lsa='ls -A'
-alias ls.='ls -A | egrep "^\."'
+#alias lsl='ls -nph'
+#alias lsla='ls -Anph'
+#alias lsa='ls -A'
+#alias ls.='ls -A | egrep "^\."'
 
-# These commands are too long!
-alias g='git'
-alias nnn='nnn -Dde'
-alias e='$EDITOR'
-alias v='$EDITOR'
-alias poweroff='loginctl poweroff'
-alias reboot='loginctl reboot'
+alias ls='exa -alh --color=always --group-directories-first'
+alias la='exa -a --color=always --group-directories-first'
+alias ll='exa -l --color=always --group-directories-first'
+alias lt='exa -aT --color=always --group-directories-first'
+alias l.='exa -a | egrep "^\."'
 
-# xbps
-alias xin='doas xbps-install -S'
-alias xrm='doas xbps-remove -R'
-alias xup='doas xbps-install -Su'
-alias xq='xbps-query -Rs'
-alias pkgi='xbps-query -S'
-alias pkgs='xbps-query -l | wc -l'
-alias lspkg='xbps-query -l'
+alias c='cd ~/.config'
+alias b='cd ~/.local/bin'
+alias d='cd ~/.local/src/dwm'
 
-alias doas='doas '
+# pacman 
+alias pacin='doas pacman -S'
+alias pacrm='doas pacman -Rns'
+alias pacup='doas pacman -Syu'
+alias pacs='pacman -Ss'
+alias pacq='pacman -Q'
+alias pacqi='pacman -Qi'
+alias paco='pacman -Qtdq'
 
 # Syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
