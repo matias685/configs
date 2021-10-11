@@ -1,5 +1,3 @@
-# wm independent hotkeys
-
 # terminal emulator
 super + Return
 	alacritty
@@ -7,6 +5,9 @@ super + Return
 # file manager
 super + shift + f
     pcmanfm
+
+super + shift + w
+    firefox
 
 # screen lock 
 super + F12
@@ -16,7 +17,7 @@ super + F12
 super + @space
      rofi -show drun -font "Hack 12"
 
-# kill xorg
+# kill bspwm
 super + shift + q
   bspc quit
 
