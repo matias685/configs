@@ -45,4 +45,4 @@ bspc rule -a 'Pcmanfm' state=floating
 bspc rule -a 'Sxiv' state=floating 
 bspc rule -a 'firefox:Toolkit' sticky=on state=floating
 bspc rule -a 'firefox:Browser' state=floating
-bspc rule -a 'mpv:gl' state=floating
+bspc rule -a 'mpv' state=floating
