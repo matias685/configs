@@ -43,7 +43,7 @@ font-3 = Material Design Icons:style=Bold:size=15;3
 
 modules-left = bspwm xwindow
 modules-center = 
-modules-right = xkeyboard pulseaudio memory cpu date powermenu
+modules-right = xkeyboard pulseaudio date powermenu
 
 tray-position = right
 tray-padding = 2
