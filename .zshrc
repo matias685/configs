@@ -3,11 +3,10 @@ setopt autocd
 unsetopt nomatch
 stty stop undef
 
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # Custom prompt
-zstyle ':vcs_info:git:*' formats ' 🐙 %b '
-PROMPT='[%F{magenta}%n%F{yellow}🚀%F{cyan}%M %F{white}%~%B%f%b]%F{green}$ '
+PROMPT='[%F{white}%~%B%f%b] $ '
 
 # History in cache directory
 HISTSIZE=10000
@@ -33,24 +32,22 @@ alias mkd='mkdir -pv'
 # Adding colors
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
-
-# ls commands
-#alias lsl='ls -nph'
-#alias lsla='ls -Anph'
-#alias lsa='ls -A'
-#alias ls.='ls -A | egrep "^\."'
-
-alias ls='exa -lh --color=always --group-directories-first'
-alias la='exa -a --color=always --group-directories-first'
-alias ll='exa -l --color=always --group-directories-first'
-alias lt='exa -aT --color=always --group-directories-first'
+alias ls='exa -h --icons --color=always --group-directories-first'
+alias la='exa -a --icons --color=always --group-directories-first'
+alias ll='exa -lh --icons --color=always --group-directories-first'
 alias l.='exa -a | egrep "^\."'
 
+# cd alias
 alias c='cd ~/.config'
 alias b='cd ~/.local/bin'
 alias d='cd ~/.local/src/dwm'
 
-# pacman 
+# app alias
+alias v='nvim'
+alias vim='nvim'
+alias nnn='nnn -Dde'
+
+# pacman alias 
 alias pacin='doas pacman -S'
 alias pacrm='doas pacman -Rns'
 alias pacup='doas pacman -Syu'
