@@ -1,80 +1,72 @@
-# i3 config file
+# AUTOSTART
+# wallpaper set
+exec_always --no-startup-id sh ~/.fehbg 
+# picom
+exec_always --no-startup-id picom --config /home/matias/.config/picom/picom.conf &
+# notification daemon
+exec_always --no-startup-id dunst &
+# Reload Xresources
+exec_always --no-startup-id xrdb ~/.Xresources
 
+
+# SETTINGS
 set $mod Mod4
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-#font pango:Hack 10
-
+font pango:Hack 10
 gaps inner 20
 gaps outer 0
-
 default_border normal 2 px
 default_border pixel 2
 default_floating_border pixel 2
 
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 8
 
-
-#-------------------------------------------------------------------SOME COLORS
-
+# COLOR SCHEME
+#
 # class                  border   backgr.  text     indic.   child_border
-client.focused           #f8f8f2  #000000  #FFFFFF  #555555  #f8f8f2
+client.focused           #f8f8f2  #000000  #FFFFFF  #f8f8f2  #f8f8f2
 client.focused_inactive  #222222  #000000  #888888  #222222  #222222
 client.unfocused         #222222  #000000  #555555  #222222  #222222
 client.urgent            #222222  #000000  #ff0000  #222222  #222222
 client.placeholder       #222222  #000000  #000000  #222222  #222222
-
 client.background        #000000
 
-#---------------------------------------------------------------------VOLUME
+
+# VOLUME
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-#---------------------------------------------------------------WINDOWCLASS
+
+# WINDOW RULES
 for_window [class="^Pcmanfm$"] floating enable
 for_window [class="vlc"] floating enable
 for_window [class="^Spotify$"] floating enable
 for_window [window_role="About"] floating enable
+for_window [class="^Gimp-2.10"] floating enable
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# start a terminal
-bindsym $mod+Return exec alacritty
 
-# kill focused window
+# KEY BINDINGS
+
+bindsym $mod+Return exec alacritty
 bindsym $mod+c kill
 
-# start rofi (a program launcher)
-bindsym $mod+d exec rofi -show run -font "Hack 12" 
+bindsym $mod+d exec rofi -show drun -font "Hack 12" 
+bindsym $mod+Ctrl+e exec rofi -show emoji -modi emoji
 
-# change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-# arrow keys
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
-# arrow keys 
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+t split t
@@ -123,6 +115,7 @@ bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
 bindsym $mod+Home workspace number $ws1
+bindsym $mod+End workspace number $ws10
 bindsym $mod+Prior workspace prev 
 bindsym $mod+Next workspace next
 
@@ -140,9 +133,9 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3 
 bindsym $mod+F2 restart
-# exit i3 (logs you out of your X session)
+# exit i3 
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
@@ -151,19 +144,11 @@ bindsym $mod+Ctrl+k resize grow height 10 px or 10 ppt
 bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
 bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
 
-# same bindings, but for the arrow keys
-bindsym Shift+Left resize grow width 10 px or 10 ppt
-bindsym Shift+Down resize shrink height 10 px or 10 ppt
-bindsym Shift+Up resize grow height 10 px or 10 ppt
-bindsym Shift+Right resize shrink width 10 px or 10 ppt
-
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# STATUSBAR
 bar {
         position top
         status_command i3blocks -c ~/.config/i3blocks/config 
-        font pango:DejaVu Sans Mono 12
+        font pango:DejaVu Sans Mono 13
         colors {
 		background #181818
 		separator #ebdbb2
@@ -173,17 +158,3 @@ bar {
 		urgent_workspace   #cc241d #900000 #fb4934
         }
 }
-
-# wallpaper set
-exec_always sh ~/.fehbg
-
-# picom
-exec_always picom --config /home/matias/.config/picom/picom.conf &
-
-# notification daemon
-exec_always dunst &
-
-# Reload Xresources
-exec_always xrdb ~/.Xresources
-
-bindsym $mod+Ctrl+Shift+l exec lock
