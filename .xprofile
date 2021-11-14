@@ -1,0 +1,6 @@
+#!/bin/sh
+~/.fehbg
+picom &
+lxpolkit &
+udiskie -an &
+slstatus &
