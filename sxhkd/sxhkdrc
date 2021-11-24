@@ -1,13 +1,13 @@
 # terminal emulator
 super + Return
-	alacritty
+	urxvt
 
 # file manager
 super + shift + f
     pcmanfm
 
 super + shift + w
-    firefox
+    firefox-esr
 
 # screen lock 
 super + F12
@@ -68,8 +68,6 @@ super + Next
 super + Prior
     bspc desktop prev.occupied -f
 
-# state/flags
-
 # set the window state
 super + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
@@ -77,8 +75,6 @@ super + {t,shift + t,s,f}
 # set the node flags
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
-
-# focus/swap
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -96,21 +92,9 @@ super + {p,b,comma,period}
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
 
-# focus the last node/desktop
-super + {grave,Tab}
-	bspc {node,desktop} -f last
-
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
-
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
-
-# preselect
 
 # preselect the direction
 super + ctrl + {h,j,k,l}
