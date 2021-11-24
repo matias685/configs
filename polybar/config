@@ -36,43 +36,17 @@ padding-right = 0
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = Iosevka:style=Bold:pixelsize=12;1
-font-1 = FontAwesome5Free:style=Solid:size=10;4
+font-0 = FantasqueSansMono:style=Bold:pixelsize=12;1
+font-1 = FontAwesome:style=Solid:size=10;1
 font-2 = NotoColorEmoji:fontformat=truetype:scale=10:antialias=false;1
 font-3 = Material Design Icons:style=Bold:size=15;3
 
-modules-left = bspwm xwindow
-modules-center = 
-modules-right = xkeyboard pulseaudio date powermenu
+modules-left = bspwm 
+modules-center = xwindow
+modules-right = pulseaudio date powermenu
 
 tray-position = right
 tray-padding = 2
-
-[module/cpu-usage]
-type = custom/script
-exec = ~/polybar-scripts/cpu.sh 
-label = "%output%"
-click-left = $TERMINAL -e htop &
-interval = 10
-format-prefix = "💻"
-#format-underline = #0a6cf5
-
-[module/memory]
-type = custom/script
-exec = ~/polybar-scripts/memory.sh
-label ="%output%"
-click-left = $TERMINAL -e htop &
-interval = 10
-format-prefix = "🧠 "
-#format-underline = #0a6cf5
-
-[module/player-moc]
-type = custom/script
-exec = ~/polybar-scripts/player-moc.sh 
-interval = 3
-click-left = mocp -f &
-click-right = mocp -r &
-click-middle = mocp -G &
 
 [module/xwindow]
 type = internal/xwindow
@@ -178,6 +152,7 @@ format-disconnected =
 [module/date]
 type = internal/date
 interval = 5
+content-padding = 0
 
 date = %d.%m.%Y %H:%M
 date-alt = " %Y-%m-%d"
@@ -266,7 +241,7 @@ ramp-foreground = ${colors.foreground-alt}
 
 [module/powermenu]
 type = custom/text
-content = "󰐥"
+content = ""
 content-padding = 1
 content-background = ${colors.red}
 content-foreground = ${colors.text}
