@@ -1,13 +1,13 @@
 configuration {
-	font:	  "Iosevka Medium 11";
+    font:	  "FantasqueSansMono Nerd Font 13";
     show-icons:                     true;
-	icon-theme: 					"Papirus";
+    icon-theme: 		   "Papirus";
     display-drun: 					"";
     drun-display-format:            "{name}";
     disable-history:                false;
     fullscreen:                     false;
-	hide-scrollbar: 				true;
-	sidebar-mode: 					false;
+    hide-scrollbar: 				true;
+    sidebar-mode: 					false;
 }
 
 @import "colors.rasi"
@@ -27,10 +27,10 @@ window {
 
 prompt {
     enabled: 						true;
-	padding: 						0.30% 1% 0% -0.5%;
-	background-color: 				@al;
-	text-color: 					@fg;
-	font:							"FantasqueSansMono Nerd Font 12";
+    padding: 						0.50% 1% 0% -0.001%;
+    background-color: 				@al;
+    text-color: 					@fg;
+    font:						"FantasqueSansMono Nerd Font 12";
 }
 
 entry {
@@ -59,8 +59,8 @@ inputbar {
 listview {
     background-color:               @al;
     padding:                        10px;
-    columns:                        2;
-    lines:                          7;
+    columns:                        1;
+    lines:                          10;
     spacing:                        1%;
     cycle:                          false;
     dynamic:                        true;
