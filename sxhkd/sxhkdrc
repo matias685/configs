@@ -6,6 +6,7 @@ super + Return
 super + shift + f
     pcmanfm
 
+# web browser
 super + shift + w
     firefox-esr
 
@@ -13,9 +14,19 @@ super + shift + w
 super + F12
     lock
 
+# screenshot
+super + shift + s
+    scrot ~/Pictures/Screenshots/%Y-%m-%d-%H%M%S.png
+
 # program launcher
 super + @space
-     rofi -show drun -font "Hack 12"
+     rofi -show drun 
+super + ctrl + q
+     rofi -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu
+
+# hide bar
+super + b
+	polybar-msg cmd toggle
 
 # kill bspwm
 super + shift + q
@@ -42,10 +53,8 @@ super + shift + {d,a}
 # Enable multimedia keys
 XF86AudioMute
     pactl set-sink-mute 0 toggle
-
 XF86AudioRaiseVolume
     pactl set-sink-volume 0 +5%
-
 XF86AudioLowerVolume
     pactl set-sink-volume 0 -5%
 
