@@ -16,13 +16,13 @@ super + F12
 
 # screenshot
 super + shift + s
-    scrot ~/Pictures/Screenshots/%Y-%m-%d-%H%M%S.png
+    scrot $HOME/Pictures/Screenshots/%Y-%m-%d-%H%M%S.png
 
 # program launcher
 super + @space
      rofi -show drun 
 super + ctrl + q
-     rofi -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu
+     rofi -show power-menu -modi power-menu:$HOME/.config/rofi/rofi-power-menu/rofi-power-menu
 
 # hide bar
 super + b
