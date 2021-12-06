@@ -6,8 +6,8 @@ URxvt.keysym.C-j: resize-font:smaller
 URxvt.keysym.C-k: resize-font:bigger
 URxvt.keysym.C-equal: resize-font:reset
 ! transparency
-URxvt.depth: 32
-URxvt.background: rgba:2222/2222/2222/dddd
+! URxvt.depth: 32
+! URxvt.background: rgba:2222/2222/2222/dddd
 
 ! special
 *.foreground:   #ffffff
