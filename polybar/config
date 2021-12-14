@@ -41,7 +41,7 @@ module-margin-left = 1
 module-margin-right = 1
 
 font-0 = Hack Nerd Font:style=Bold:pixelsize=11;1
-font-1 = FontAwesome:style=Regular:size=11;1
+font-1 = Font 5 Awesome Free:style=Solid:scale=11:antialias=true:autohint:true
 font-2 = NotoColorEmoji:fontformat=truetype:scale=11;1
 
 modules-left = bspwm xwindow
@@ -50,6 +50,8 @@ modules-right = pulseaudio date powermenu
 
 tray-position = right
 tray-padding = 2
+tray-scale = 1.0
+tray-maxsize = 20
 
 [module/xwindow]
 type = internal/xwindow
@@ -58,7 +60,7 @@ label =   %title:0:145:...%
 [module/bspwm]
 type = internal/bspwm
 label-focused = %name%
-label-focused-underline= #ff3d3d 
+label-focused-underline= ${colors.foreground}
 label-focused-padding = 1
 
 label-occupied = %name%
@@ -163,7 +165,7 @@ content = ""
 content-padding = 1
 #content-background = ${colors.red}
 content-foreground = ${colors.red}
-click-left = rofi -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu
+click-left = rofi -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu
 format-underline = #704214
 
 expand-right = true
