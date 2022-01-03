@@ -1,12 +1,12 @@
 # AUTOSTART
 # wallpaper set
-exec_always --no-startup-id sh ~/.fehbg 
+exec_always --no-startup-id sh $HOME/.fehbg 
 # picom
-exec_always --no-startup-id picom --config /home/matias/.config/picom/picom.conf &
+exec_always --no-startup-id picom &
 # notification daemon
 exec_always --no-startup-id dunst &
 # Reload Xresources
-exec_always --no-startup-id xrdb ~/.Xresources
+exec_always --no-startup-id xrdb $HOME/.Xresources
 
 
 # SETTINGS
