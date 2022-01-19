@@ -1,6 +1,7 @@
 #!/bin/sh
-~/.fehbg
-picom &
-lxpolkit &
-udiskie -an &
-slstatus &
+~/.fehbg # set wallpaper
+picom & # compositor
+lxpolkit & # polkit agent
+udiskie -an & # automounter
+unclutter & # hide mouse cursor when idle
+slstatus & # status monitor
