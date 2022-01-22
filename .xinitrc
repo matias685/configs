@@ -6,8 +6,8 @@ $HOME/.fehbg
 picom &
 dunst &
 udiskie -an &
-slstatus
-unclutter
+unclutter &
 xrdb $HOME/.Xresources
+slstatus &
 
 exec dwm
