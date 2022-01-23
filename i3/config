@@ -1,26 +1,28 @@
 # AUTOSTART
 # wallpaper set
-exec_always --no-startup-id sh $HOME/.fehbg 
-# picom
+exec_always --no-startup-id $HOME/.fehbg 
+# compositor
 exec_always --no-startup-id picom &
 # notification daemon
 exec_always --no-startup-id dunst &
 # Reload Xresources
-exec_always --no-startup-id xrdb $HOME/.Xresources
+exec_always --no-startup-id xrdb ~/.Xresources
+exec_always --no-startup-id udiskie -an &
+exec_always --no-startup-id unclutter &
 
-
-# SETTINGS
+# MAIN SETTINGS
 set $mod Mod4
-font pango:Hack 10
-gaps inner 20
-gaps outer 0
-default_border normal 2 px
-default_border pixel 2
-default_floating_border pixel 2
+set $term alacritty
+font pango:Iosevka 10
+default_border pixel 3
+default_floating_border pixel 3
+floating_modifier $mod
 
+# GAPS
+gaps inner 15
+gaps outer 8
 
 # COLOR SCHEME
-#
 # class                  border   backgr.  text     indic.   child_border
 client.focused           #f8f8f2  #000000  #FFFFFF  #f8f8f2  #f8f8f2
 client.focused_inactive  #222222  #000000  #888888  #222222  #222222
@@ -30,39 +32,41 @@ client.placeholder       #222222  #000000  #000000  #222222  #222222
 client.background        #000000
 
 
-# VOLUME
+# VOLUME KEYS
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 
 
 # WINDOW RULES
-for_window [class="^Pcmanfm$"] floating enable
-for_window [class="vlc"] floating enable
-for_window [class="^Spotify$"] floating enable
 for_window [window_role="About"] floating enable
-for_window [class="^Gimp-2.10"] floating enable
+for_window [window_role="Sxiv"] floating enable
+for_window [window_role="Pcsx2"] floating enable
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
-
-
-# KEY BINDINGS
-
-bindsym $mod+Return exec alacritty
+# MAIN BINDINGS
+bindsym $mod+Return exec $term 
 bindsym $mod+c kill
-
-bindsym $mod+d exec rofi -show drun -font "Hack 12" 
+bindsym $mod+d exec rofi -show drun -font "Iosevka 12" 
 bindsym $mod+Ctrl+e exec rofi -show emoji -modi emoji
+bindsym $mod+p exec dmenu_run -h 26
+bindsym $mod+r exec $term -e ranger
+bindsym $mod+Shift+s exec scrot $HOME/Pictures/Screenshots/%Y-%m-%d-%H%M%S.png
+bindsym $mod+Ctrl+Shift+l exec --no-startup-id xlock
+bindsym $mod+Shift+q exec pmenu
 
+# SCRATCHPAD
+bindsym $mod+Shift+u move scratchpad
+bindsym $mod+u scratchpad show
+
+# WINDOW FOCUS
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+bindsym $mod+a focus parent
 
-# move focused window
+# WINDOW MOVEMENT
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
@@ -88,9 +92,7 @@ bindsym $mod+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+Shift+space focus mode_toggle
 
-# focus the parent container
-bindsym $mod+a focus parent
-
+# WORKPLACES
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -138,7 +140,7 @@ bindsym $mod+F2 restart
 # exit i3 
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
+# RESIZE
 bindsym $mod+Ctrl+j resize shrink height 10 px or 10 ppt
 bindsym $mod+Ctrl+k resize grow height 10 px or 10 ppt
 bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
@@ -147,8 +149,8 @@ bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
 # STATUSBAR
 bar {
         position top
-        status_command i3blocks -c ~/.config/i3blocks/config 
-        font pango:DejaVu Sans Mono 13
+        status_command i3blocks
+        font pango:Iosevka Nerd Font 13
         colors {
 		background #181818
 		separator #ebdbb2
