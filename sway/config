@@ -1,6 +1,9 @@
 # AUTOSTART
 exec_always --no-startup-id dunst &
 exec_always --no-startup-id udiskie -an &
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY 
 
 # SETTINGS
 set $mod Mod4
@@ -42,7 +45,6 @@ for_window [class="^Gimp-2.10"] floating enable
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-
 # KEY BINDINGS
 
 bindsym $mod+Return exec $term
@@ -52,6 +54,9 @@ bindsym $mod+d exec wofi --show drun
 bindsym $mod+Ctrl+e exec rofi -show emoji -modi emoji
 bindsym $mod+Shift+Ctrl+l exec lock
 bindsym $mod+Shift+s exec grim $HOME/Pictures/Wallpapers/$(date +'%s_grim.png')
+bindsym $mod+r exec $term ranger
+bindsym $mod+Shift+u move scratchpad
+bindsym $mod+u scratchpad show
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -141,16 +146,7 @@ bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
 
 # STATUSBAR
 bar {
-        position top
-        status_command i3status 
-        font pango:Iosevka 12
-        colors {
-		background #181818
-		separator #ebdbb2
-		#<colorclass> <border> <background> <text>
-		focused_workspace  #181818 #f8f8f2 #181818
-		inactive_workspace #181818 #181818 #f8f8f2
-		urgent_workspace   #cc241d #900000 #fb4934
+        swaybar_command waybar
         }
 }
 
