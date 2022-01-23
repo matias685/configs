@@ -1,6 +1,5 @@
 # AUTOSTART
 exec_always --no-startup-id dunst &
-exec_always --no-startup-id unclutter &
 exec_always --no-startup-id udiskie -an &
 
 # SETTINGS
