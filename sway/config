@@ -50,6 +50,8 @@ bindsym $mod+c kill
 
 bindsym $mod+d exec wofi --show drun 
 bindsym $mod+Ctrl+e exec rofi -show emoji -modi emoji
+bindsym $mod+Shift+Ctrl+l exec lock
+bindsym $mod+Shift+s exec grim $HOME/Pictures/Wallpapers/$(date +'%s_grim.png')
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
