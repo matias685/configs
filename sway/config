@@ -1,97 +1,110 @@
-# AUTOSTART
-exec_always --no-startup-id dunst &
-exec_always --no-startup-id udiskie -an &
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY 
-
-# SETTINGS
+# Main settings
 set $mod Mod4
 set $term foot
+floating_modifier $mod
 font pango:Iosevka 10
-gaps inner 15
-gaps outer 0
 default_border pixel 2
 default_floating_border pixel 2
 
-# OUTPUT
-output "*" bg $HOME/Pictures/Wallpapers/10-4-6k.jpg fill
+#Gaps
+gaps inner 15
+gaps outer 0
 
-# COLOR SCHEME
+# Set wallpaper
+output "*" bg $HOME/Pictures/Wallpapers/708805.jpg fill
+
+# Hide cursor
+seat * hide_cursor 4000
+seat * hide_cursor when-typing enable
+
+# Set keyboard
+input * {
+    xkb_layout "fi"
+    xkb_variant ","
+    xkb_options "grp:alt_shift_toggle"
+}
+
+# Statusbar
+bar {
+        swaybar_command waybar
+        }
+}
+
+# Window colors
 # class                  border   backgr.  text     indic.   child_border
-client.focused           #f8f8f2  #000000  #FFFFFF  #f8f8f2  #f8f8f2
+client.focused           #0088CC  #000000  #FFFFFF  #0088CC  #0088CC 
 client.focused_inactive  #222222  #000000  #888888  #222222  #222222
 client.unfocused         #222222  #000000  #555555  #222222  #222222
 client.urgent            #222222  #000000  #ff0000  #222222  #222222
 client.placeholder       #222222  #000000  #000000  #222222  #222222
+
 client.background        #000000
 
-
-# VOLUME
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-
-# WINDOW RULES
+# Window rules
 for_window [class="^Pcmanfm$"] floating enable
 for_window [class="vlc"] floating enable
 for_window [class="^Spotify$"] floating enable
 for_window [window_role="About"] floating enable
 for_window [class="^Gimp-2.10"] floating enable
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+#KEY BINDINGS
 
-# KEY BINDINGS
-
+# Basics
 bindsym $mod+Return exec $term
 bindsym $mod+c kill
-
 bindsym $mod+d exec wofi --show drun 
+bindsym $mod+q exec $HOME/scripts/wofi-power.sh
 bindsym $mod+Ctrl+e exec rofi -show emoji -modi emoji
-bindsym $mod+Shift+Ctrl+l exec lock
+bindsym $mod+Shift+Ctrl+l exec ~/scripts/lock
 bindsym $mod+Shift+s exec grim $HOME/Pictures/Wallpapers/$(date +'%s_grim.png')
-bindsym $mod+r exec $term ranger
+bindsym $mod+r exec kitty ranger
 bindsym $mod+Shift+u move scratchpad
 bindsym $mod+u scratchpad show
 
+# Change gaps
+bindsym $mod+z gaps inner current plus 5
+bindsym $mod+Shift+z gaps inner current minus 5
+
+# Window focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+bindsym $mod+Shift+space focus mode_toggle # switch focus between tiling /floating
+bindsym $mod+a focus parent
 
-# move focused window
+# Move windows
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# split in horizontal orientation
+# change split direction
 bindsym $mod+t split t
 
-# split in vertical orientation
-bindsym $mod+v split v
-
-# enter fullscreen mode for the focused container
+# Switch to fullscreen
 bindsym $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
+# Change window layout
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
 bindsym $mod+space floating toggle
 
-# change focus between tiling / floating windows
-bindsym $mod+Shift+space focus mode_toggle
+# Resize windows
+bindsym $mod+Ctrl+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+k resize grow height 10 px or 10 ppt
+bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
+bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
 
-# focus the parent container
-bindsym $mod+a focus parent
+# Volume control
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+# Workspaces
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -102,8 +115,6 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-
-# switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
 bindsym $mod+3 workspace number $ws3
@@ -114,13 +125,10 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
-
 bindsym $mod+Home workspace number $ws1
 bindsym $mod+End workspace number $ws10
 bindsym $mod+Prior workspace prev 
 bindsym $mod+Next workspace next
-
-# move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
@@ -132,27 +140,11 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# reload the configuration file
+# reload the config file 
 bindsym $mod+Shift+c reload
-# restart i3 
 # exit sway
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
-# resize window (you can also use the mouse for that)
-bindsym $mod+Ctrl+j resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+k resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
-
-# STATUSBAR
-bar {
-        swaybar_command waybar
-        }
-}
-
-input * {
-    xkb_layout "fi"
-    xkb_variant ","
-    xkb_options "grp:alt_shift_toggle"
-}
-
+# Autostart
+exec_always --no-startup-id dunst &
+exec_always --no-startup-id udiskie -an &
