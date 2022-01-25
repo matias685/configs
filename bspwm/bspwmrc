@@ -1,21 +1,18 @@
 #!/bin/sh
 
 # AUTOSTART
-[ -e ~/.profile ] && . ~/.profile
-~/.fehbg 
+[ -f ~/.xprofile ] && . ~/.xprofile
 xsetroot -cursor_name left_ptr
-xrdb ~/.Xresources
 ~/.config/polybar/launch.sh
 pgrep -x sxhkd > /dev/null || sxhkd &
-pgrep -x dunst > /dev/null || dunst &
-pgrep -x picom > /dev/null || picom &
-pgrep -x lxpolkit > /dev/null || lxpolkit &
+dunst &
 
 # SETTINGS
 bspc config focus_follows_pointer true
 bspc config split_ratio           0.51
 bspc config gapless_monocle	  true
 bspc config borderless_monocle	  true
+bspc config pointer_motion_interval 16
 
 # COLORS
 bspc config normal_border_color	"#1e1e1e"
@@ -25,7 +22,7 @@ bspc config presel_feedback_color "#327bd1"
 bspc config urgent_border_color "#dd2727"
 
 # GAPS
-bspc config top_padding 5
+bspc config top_padding 25
 bspc config border_width 3
 bspc config window_gap 15
 
