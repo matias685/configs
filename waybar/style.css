@@ -99,7 +99,7 @@ window#waybar.chromium {
 }
 
 #clock {
-    background-color: #64727D;
+    background-color: transparent;
 }
 
 #battery {
@@ -134,12 +134,13 @@ label:focus {
 }
 
 #cpu {
-    background-color: #2ecc71;
-    color: #000000;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 #memory {
-    background-color: #9b59b6;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 #disk {
@@ -159,8 +160,8 @@ label:focus {
 }
 
 #pulseaudio {
-    background-color: #f1c40f;
-    color: #000000;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 #pulseaudio.muted {
@@ -183,7 +184,7 @@ label:focus {
 }
 
 #temperature {
-    background-color: #f0932b;
+    background-color: transparent;
 }
 
 #temperature.critical {
@@ -191,7 +192,7 @@ label:focus {
 }
 
 #tray {
-    background-color: #2980b9;
+    background-color: transparent;
 }
 
 #tray > .passive {
