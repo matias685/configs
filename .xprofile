@@ -1,0 +1,10 @@
+#!/bin/sh
+
+setbg
+picom &
+dunst &
+udiskie -an &
+lxpolkit &
+unclutter &
+clipmenud &
+xrdb $HOME/.Xresources
