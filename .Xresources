@@ -1,13 +1,13 @@
 Xft.dpi: 96
 URxvt.font: xft:Iosevka Term:size=13,xft:FontAwesome:size=12
 URxvt.scrollBar: false
-URxvt.perl-ext-common: default,resize-font
+URxvt.perl-ext-common: default,resize-font,ibeamcursor
 URxvt.keysym.C-j: resize-font:smaller
 URxvt.keysym.C-k: resize-font:bigger
 URxvt.keysym.C-equal: resize-font:reset
 ! transparency
 ! URxvt.depth: 32
-! URxvt.background: rgba:2222/2222/2222/dddd
+! URxvt.background: rgba:1111/1111/1111/dddd
 
 ! special
 *.foreground:   #ffffff
