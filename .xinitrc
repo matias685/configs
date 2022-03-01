@@ -1,13 +1,5 @@
 #!/bin/sh
 
-export PATH=$HOME/.local/bin:$PATH
+#[ -f ~/.xprofile ] && . ~/.xprofile
 
-$HOME/.fehbg
-picom &
-dunst &
-udiskie -an &
-unclutter &
-xrdb $HOME/.Xresources
-slstatus &
-
-exec dwm
+exec bspwm
