@@ -23,7 +23,7 @@ compinit
 _comp_options+=(globdots)     # Include hidden files.
 
 
-# Pretty-print man(1) pages.
+# Syntax color in manpages
 export LESS_TERMCAP_mb=$'\E[1;31m'
 export LESS_TERMCAP_md=$'\E[1;31m'
 export LESS_TERMCAP_me=$'\E[0m'
