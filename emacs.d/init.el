@@ -44,7 +44,7 @@
    '("e27c391095dcee30face81de5c8354afb2fbe69143e1129109a16d17871fc055" "795d2a48b56beaa6a811bcf6aad9551878324f81f66cac964f699871491710fa" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
  '(package-selected-packages
    '(helm modus-themes ido-grid-mode use-package rainbow-mode org emojify doom-modeline dashboard)))
-3(use-package dashboard
+(use-package dashboard
   :ensure t
   :config
   (setq dashboard-show-shortcuts nil)
