@@ -1,14 +1,23 @@
 ;; Remove bars
 (tool-bar-mode -1)
-;;(menu-bar-mode -1)
+(menu-bar-mode -1)
 (toggle-scroll-bar -1) 
-(setq next-line-add-newlines t)
+
+;; Open dashboard when using emacsclient
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
+(setq help-window-select t)  ; Switch to help buffers automatically
+
 ;; Show file name in title
 (setq frame-title-format
-      `((buffer-file-name "%b")
+      `((buffer-file-name "%f" "%b")
         ,(format " - GNU Emacs %s" emacs-version)))
 (setq dired-listing-switches "--group-directories-first -alh")
- ;; Case insensitive completion
+
+;; Set the first day of the week to Monday
+(setq calendar-week-start-day 1)
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 ;; change all prompts to y or n
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq ad-redefinition-action 'accept)
@@ -16,14 +25,15 @@
 (setq read-file-name-completion-ignore-case t)
 (setq completion-cycle-threshold t)
 (setq make-backup-files nil) ; stop creating ~ files
+
 ;; Focus on the new frame
 (defadvice split-window (after split-window-after activate)
   (other-window 1))
-;; Enable line numbers
-(global-display-line-numbers-mode 1)
+
 ;; Default font
 (add-to-list 'default-frame-alist
              '(font . "Iosevka 12"))
+
 (require 'use-package)
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -35,8 +45,26 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("e27c391095dcee30face81de5c8354afb2fbe69143e1129109a16d17871fc055" "795d2a48b56beaa6a811bcf6aad9551878324f81f66cac964f699871491710fa" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
+ '(elfeed-goodies/entry-pane-position 'bottom)
+ '(elfeed-goodies/entry-pane-size 0.6)
+ '(elfeed-goodies/feed-source-column-width 50)
+ '(elfeed-goodies/powerline-default-separator 'bar)
+ '(elfeed-goodies/tag-column-width 20)
  '(package-selected-packages
-   '(marginalia org-bullets evil magit modus-themes ido-grid-mode use-package rainbow-mode org emojify doom-modeline dashboard)))
+   '(beacon elfeed-goodies elfeed vertico orderless pulsar centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard)))
+;; '(pulsar-pulse-functions
+;;   '(isearch-repeat-forward isearch-repeat-backward recenter-top-bottom move-to-window-line-top-bottom reposition-window other-window delete-window delete-other-windows forward-page backward-page scroll-up-command scroll-down-command windmove-right windmove-left windmove-up windmove-down windmove-swap-states-right windmove-swap-states-left windmove-swap-states-up windmove-swap-states-down tab-new tab-close tab-next org-next-visible-heading org-previous-visible-heading org-forward-heading-same-level org-backward-heading-same-level outline-backward-same-level outline-forward-same-level outline-next-visible-heading outline-previous-visible-heading outline-up-heading)))
+
+;; Org-presentation
+(require 'org-tree-slide)
+(with-eval-after-load "org-tree-slide"
+  (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+  (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree)
+  )
+(global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+(global-set-key (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
+
+;; Dashboard
 (use-package dashboard
   :ensure t
   :config
@@ -48,36 +76,26 @@
   (setq dashboard-set-footer t)
 (when (display-graphic-p)
   (require 'all-the-icons))
-;;(use-package doom-modeline
-;;  :ensure t
-;;  :init (doom-modeline-mode 1))
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 (use-package modus-themes
   :config
   (load-theme 'modus-operandi t))
-(use-package emojify
-  :hook (after-init . global-emojify-mode))
+
+;; emoji
+;;(use-package emojify
+;;  :hook (after-init . global-emojify-mode))
+
 ;; org-bullets
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-;; interactive mode
-;;(ido-mode 1)
-;;(setq ido-everywhere t)
-;;(setq ido-enable-flex-matching t)
-;;(setq ido-use-filename-at-point 'guess)
-;;(ido-grid-mode 1)
-;;   (global-set-key
-;;     "\M-x"
-;;     (lambda ()
-;;       (interactive)
-;;       (call-interactively
-;;        (intern
-;;         (ido-completing-read
-;;          "M-x "
-;;          (all-completions "" obarray 'commandp))))))
-;; Enable vertico
+
+;; Vertico autocomplete
 (use-package vertico
   :init
   (vertico-mode))
+
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
   ;; Either bind `marginalia-cycle` globally or only in the minibuffer
@@ -91,13 +109,84 @@
   ;; Must be in the :init section of use-package such that the mode gets
   ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
-;; Enable Evil
-;;(require 'evil)
-;;(evil-mode 1)
+
+;; Orderless completion
+(use-package orderless
+  :ensure t
+  :custom (completion-styles '(orderless)))
+
+;; Pulsar package
+;;(require 'pulsar)
+;;(pulsar-setup)
+;;(customize-set-variable
+;; 'pulsar-pulse-functions
+;; '(isearch-repeat-forward
+;;   isearch-repeat-backward
+;;   recenter-top-bottom
+;;   move-to-window-line-top-bottom
+;;   reposition-window
+;;   other-window
+;;   delete-window
+;;   delete-other-windows
+;;   forward-page
+;;   backward-page
+;;   scroll-up-command
+;;   scroll-down-command
+;;   windmove-right
+;;   windmove-left
+;;   windmove-up
+;;   windmove-down
+;;   windmove-swap-states-right
+;;   windmove-swap-states-left
+;;   windmove-swap-states-up
+;;   windmove-swap-states-down
+;;   tab-new
+;;   tab-close
+;;   tab-next
+;;   org-next-visible-heading
+;;   org-previous-visible-heading
+;;   org-forward-heading-same-level
+;;   org-backward-heading-same-level
+;;   outline-backward-same-level
+;;   outline-forward-same-level
+;;   outline-next-visible-heading
+;;   outline-previous-visible-heading
+;;   outline-up-heading))
+;;(setq pulsar-pulse t)
+;;(setq pulsar-delay 0.055)
+;;(setq pulsar-face 'pulsar-cyan)
+;;
+;;(let ((map global-map))
+;;  (define-key map (kbd "C-x l") 'pulsar-pulse-line))
+(beacon-mode 1)
+(setq beacon-push-mark 70)
+(setq beacon-color "#00FFFF")
+(let ((map global-map))
+  (define-key map (kbd "C-x l") #'beacon-blink))
+;; RSS reader
+  (use-package elfeed
+    :ensure t
+    :config
+    (setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory))
+    (setq-default elfeed-search-filter "@2-week-ago")
+    :bind
+    ("C-x w" . elfeed ))
+(setq elfeed-feeds
+      '(("https://archlinux.org/feeds/news/" linux)
+	("https://www.reddit.com/r/linux.rss" linux reddit)
+        ("https://www.sachachua.com/blog/feed" emacs)
+        ("https://www.reddit.com/r/emacs.rss" emacs reddit)
+	("https://www.reddit.com/r/CommunismMemes.rss" memes reddit)
+	("https://xkcd.com/rss.xml" comics)
+	("https://thisweek.gnome.org/index.xmlw" linux)))
+(use-package elfeed-goodies
+  :ensure t
+  :config
+  (elfeed-goodies/setup))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
