@@ -121,11 +121,10 @@ myLayout = (tiled ||| full ||| grid ||| bsp)
 
 myManageHook = composeAll
     [ className =? "mpv"            --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
-    , className =? "Gimp"           --> doFloat
-    , className =? "Firefox" <&&> resource =? "Toolkit" --> doFloat -- firefox pip
+    , className =? "firefox" <&&> resource =? "Toolkit" --> doFloat -- firefox pip
+    , className =? "firefox" <&&> resource =? "Browser" --> doFloat
+    , className =? "firefox" <&&> resource =? "Places" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore 
-    , isFullscreen --> doFullFloat
     ] 
     
 ------------------------------------------------------------------------
@@ -157,6 +156,7 @@ myKeys =
      -- , ("M-p", spawn "rofi -show combi -modi combi") -- rofi
      , ("M-S-e", spawn "emacsclient -c -n")
      , ("M-i", spawn "urxvt -e htop")
+     , ("M-r", spawn "st -e lfub")
      , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
      , ("M-q", spawn "pmenu")
     ]
