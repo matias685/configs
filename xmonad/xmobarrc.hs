@@ -1,10 +1,10 @@
 Config {
        font = "xft:Zekton:size=13:bold:antialias=true"
-       , additionalFonts = [ "xft:FontAwesome:size=11" ]
+       , additionalFonts = [ "xft:Font Awesome 6 Free Solid:size=11" ]
        , allDesktops = True
        , bgColor = "#282c34"
        , fgColor = "#bbc2cf"
-       , position = TopW L 95
+       , position = TopW L 100
        , commands = [ Run Cpu [ "--template", "<fc=#a9a1e1><fn=1></fn></fc> <total>%"
                               , "--Low","3"
                               , "--High","50"
@@ -51,9 +51,10 @@ Config {
                                                    -- charged status
                                                    , "-i"   , "<fc=#98be65>Charged</fc>"
                                          ] 50
+		    , Run Volume "default" "Master" [] 10
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% | %coretemp% | %memory% | %battery% | %dynnetwork% | %date%  |"   -- #69DFFA
+       , template = "%StdinReader% }{ %default:Master% | %cpu% | %coretemp% | %memory% | %dynnetwork% | %date%"   -- #69DFFA
        }

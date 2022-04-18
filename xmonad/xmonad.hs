@@ -53,14 +53,14 @@ import XMonad.Layout.BinarySpacePartition
 
 myModMask = mod4Mask -- Sets modkey to super/windows key
 myTerminal = "urxvt" -- Sets default terminal
-myBorderWidth = 2 -- Sets border width for windows
+myBorderWidth = 3 -- Sets border width for windows
 myNormalBorderColor = "#839496"
 myFocusedBorderColor = "#268BD2"
-myppCurrent = "#cb4b16"
-myppVisible = "#cb4b16"
+myppCurrent = "#268bd2"
+myppVisible = "#268bd2"
 myppHidden = "#268bd2"
 myppHiddenNoWindows = "#93A1A1"
-myppTitle = "#FDF6E3"
+myppTitle = "#eeeeee"
 myppUrgent = "#DC322F"
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
@@ -83,22 +83,22 @@ instance UrgencyHook LibNotifyUrgencyHook where
 -- layout
 ------------------------------------------------------------------------
 
-myLayout = avoidStruts (tiled ||| full ||| grid ||| bsp)
+myLayout = (tiled ||| full ||| grid ||| bsp)
   where
      -- full
      full = renamed [Replace "Full"] 
           $ noBorders (Full)
-	  
 
      -- tiled
      tiled = renamed [Replace "Tall"]
            -- $ smartBorders
+           $ avoidStruts
            $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
            $ ResizableTall 1 (3/100) (1/2) []
 
      -- grid
      grid = renamed [Replace "Grid"]
-          -- $ smartBorders
+          $ avoidStruts
           $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
           $ Grid (16/10)
 
@@ -139,18 +139,26 @@ myKeys =
     ++
     [("S-C-a", windows copyToAll)   -- copy window to all workspaces
      , ("S-C-z", killAllOtherCopies)  -- kill copies of window on other workspaces
-     , ("M-<Return>", spawn "st")
+     , ("M-S-r", spawn "xmonad --restart")
+     , ("M-C-r", spawn "xmonad --recompile")
+     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
+     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-") 
+     , ("<XF86AudioMute>", spawn "amixer set Master toggle")
+     , ("M-<Return>", spawn myTerminal)
      , ("M-c", kill)
      , ("M-a", sendMessage MirrorExpand)
      , ("M-z", sendMessage MirrorShrink)
-     , ("M-s", sendMessage ToggleStruts)
+     , ("M-b", sendMessage ToggleStruts)
      , ("M-f", sendMessage $ JumpToLayout "Full")
      , ("M-t", sendMessage $ JumpToLayout "Tall")
      , ("M-g", sendMessage $ JumpToLayout "Grid")
-     , ("M-b", sendMessage $ JumpToLayout "BSP")
-     , ("M-d", spawn "dmenu_run -p 'Yes Master ?'") -- dmenu
+     -- , ("M-b", sendMessage $ JumpToLayout "BSP")
+     , ("M-d", spawn "dmenu_run -h 32 -p 'Yes Master ?'") -- dmenu
      -- , ("M-p", spawn "rofi -show combi -modi combi") -- rofi
+     , ("M-S-e", spawn "emacsclient -c -n")
+     , ("M-i", spawn "urxvt -e htop")
      , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
+     , ("M-q", spawn "pmenu")
     ]
     
 
@@ -174,7 +182,7 @@ main = do
                         { ppOutput = hPutStrLn xmproc0 
                         , ppCurrent = xmobarColor myppCurrent "" . wrap "[" "]" -- Current workspace in xmobar
                         , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
-                        , ppHidden = xmobarColor myppHidden "" . wrap "+" ""   -- Hidden workspaces in xmobar
+                        , ppHidden = xmobarColor myppHidden "" . wrap "" ""   -- Hidden workspaces in xmobar
                         , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
                         , ppTitle = xmobarColor  myppTitle "" . shorten 80     -- Title of active window in xmobar
                         , ppSep =  "<fc=#586E75> | </fc>"                     -- Separators in xmobar
