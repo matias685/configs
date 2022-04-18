@@ -2,7 +2,7 @@ Config {
        font = "xft:Zekton:size=13:bold:antialias=true"
        , additionalFonts = [ "xft:Font Awesome 6 Free Solid:size=11" ]
        , allDesktops = True
-       , bgColor = "#282c34"
+       , bgColor = "#222222"
        , fgColor = "#bbc2cf"
        , position = TopW L 100
        , commands = [ Run Cpu [ "--template", "<fc=#a9a1e1><fn=1></fn></fc> <total>%"
@@ -56,5 +56,5 @@ Config {
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %default:Master% | %cpu% | %coretemp% | %memory% | %dynnetwork% | %date%"   -- #69DFFA
+       , template = "%StdinReader% }{ %default:Master% | %cpu% | %coretemp% | %memory% | %date%          "   -- #69DFFA
        }

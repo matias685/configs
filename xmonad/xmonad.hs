@@ -45,7 +45,8 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
 import XMonad.Layout.GridVariants
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.BinarySpacePartition
+import XMonad.Layout.ThreeColumns
+import XMonad.Layout.SimpleFloat
 
 ------------------------------------------------------------------------
 -- variables
@@ -83,7 +84,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
 -- layout
 ------------------------------------------------------------------------
 
-myLayout = (tiled ||| full ||| grid ||| bsp)
+myLayout = (tiled ||| full ||| grid ||| threecol)
   where
      -- full
      full = renamed [Replace "Full"] 
@@ -102,9 +103,13 @@ myLayout = (tiled ||| full ||| grid ||| bsp)
           $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
           $ Grid (16/10)
 
-     -- bsp
-     bsp = renamed [Replace "BSP"] 
-         $ emptyBSP
+     -- threecol
+     threecol = renamed [Replace "Column"]
+          $ avoidStruts
+	  $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True
+	  $ ThreeColMid 1 (3/100) (1/2)
+
+	  
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -120,11 +125,12 @@ myLayout = (tiled ||| full ||| grid ||| bsp)
 ------------------------------------------------------------------------
 
 myManageHook = composeAll
-    [ className =? "mpv"            --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
-    , className =? "firefox" <&&> resource =? "Toolkit" --> doFloat -- firefox pip
+    [ className =? "firefox" <&&> resource =? "Toolkit" --> doFloat -- firefox pip
     , className =? "firefox" <&&> resource =? "Browser" --> doFloat
     , className =? "firefox" <&&> resource =? "Places" --> doFloat
+    , className =? "Galculator" --> doRectFloat (W.RationalRect (1 % 4) (1 % 2) (1 % 4) (1 % 4))
     , resource  =? "desktop_window" --> doIgnore
+    , isFullscreen --> doFullFloat
     ] 
     
 ------------------------------------------------------------------------
@@ -151,13 +157,16 @@ myKeys =
      , ("M-f", sendMessage $ JumpToLayout "Full")
      , ("M-t", sendMessage $ JumpToLayout "Tall")
      , ("M-g", sendMessage $ JumpToLayout "Grid")
-     -- , ("M-b", sendMessage $ JumpToLayout "BSP")
-     , ("M-d", spawn "dmenu_run -h 32 -p 'Yes Master ?'") -- dmenu
+     , ("M-u", sendMessage $ JumpToLayout "Column")
+     , ("M-d", spawn "dmenu_run -h 32 -p 'run: '") -- dmenu
+     , ("M-x", spawn "clipmenu")
      -- , ("M-p", spawn "rofi -show combi -modi combi") -- rofi
+     , ("M-e", spawn "rofi -show emoji")
      , ("M-S-e", spawn "emacsclient -c -n")
      , ("M-i", spawn "urxvt -e htop")
      , ("M-r", spawn "st -e lfub")
      , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
+     , ("M-S-<Return>", windows W.shiftMaster) -- move window to master
      , ("M-q", spawn "pmenu")
     ]
     
@@ -184,7 +193,7 @@ main = do
                         , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
                         , ppHidden = xmobarColor myppHidden "" . wrap "" ""   -- Hidden workspaces in xmobar
                         , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
-                        , ppTitle = xmobarColor  myppTitle "" . shorten 80     -- Title of active window in xmobar
+                        , ppTitle = xmobarColor  myppTitle "" . shorten 120     -- Title of active window in xmobar
                         , ppSep =  "<fc=#586E75> | </fc>"                     -- Separators in xmobar
                         , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace
                         , ppExtras  = [windowCount]                           -- # of windows current workspace
