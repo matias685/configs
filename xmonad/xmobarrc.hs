@@ -52,9 +52,13 @@ Config {
                                                    , "-i"   , "<fc=#98be65>Charged</fc>"
                                          ] 50
 		    , Run Volume "default" "Master" [] 10
+            -- keyboard layout indicator
+            , Run Kbd            [ ("fi"                , "<fc=#181715,#58C5F1> FI </fc>")
+                                 , ("us"                , "<fc=#181715,#58C5F1> US </fc>")
+                                 ]
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %default:Master% | %cpu% | %coretemp% | %memory% | %date%          "   -- #69DFFA
+       , template = "%StdinReader% }{ %kbd%  %default:Master% | %cpu% | %coretemp% | %memory% | %date%          "   -- #69DFFA
        }

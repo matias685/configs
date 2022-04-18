@@ -34,6 +34,7 @@ import XMonad.Hooks.EwmhDesktops -- to show workspaces in application switchers
 import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog,  doFullFloat, doCenterFloat, doRectFloat) 
 import XMonad.Hooks.Place (placeHook, withGaps, smart)
 import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.InsertPosition
 
 -- actions
 import XMonad.Actions.CopyWindow -- for dwm window style tagging
@@ -84,7 +85,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
 -- layout
 ------------------------------------------------------------------------
 
-myLayout = (tiled ||| full ||| grid ||| threecol)
+myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol)
   where
      -- full
      full = renamed [Replace "Full"] 
@@ -96,6 +97,13 @@ myLayout = (tiled ||| full ||| grid ||| threecol)
            $ avoidStruts
            $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
            $ ResizableTall 1 (3/100) (1/2) []
+
+     -- mirror
+     mirror = renamed [Replace "Mirror"]
+          $ avoidStruts
+          $ Mirror
+          $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
+          $ Tall 1 (3/100) (3/5)
 
      -- grid
      grid = renamed [Replace "Grid"]
@@ -158,6 +166,7 @@ myKeys =
      , ("M-t", sendMessage $ JumpToLayout "Tall")
      , ("M-g", sendMessage $ JumpToLayout "Grid")
      , ("M-u", sendMessage $ JumpToLayout "Column")
+     , ("M-m", sendMessage $ JumpToLayout "Mirror")
      , ("M-d", spawn "dmenu_run -h 32 -p 'run: '") -- dmenu
      , ("M-x", spawn "clipmenu")
      -- , ("M-p", spawn "rofi -show combi -modi combi") -- rofi
@@ -178,7 +187,7 @@ myKeys =
 main = do
     xmproc0 <- spawnPipe "xmobar ~/.xmonad/xmobarrc.hs"
     xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh desktopConfig
-        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+> myManageHook <+> manageHook desktopConfig
+        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition End Newer <+> myManageHook <+> manageHook desktopConfig
         , layoutHook         = myLayout
         , handleEventHook    = handleEventHook desktopConfig
         , workspaces         = myWorkspaces
