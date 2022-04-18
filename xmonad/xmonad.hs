@@ -133,10 +133,11 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol)
 ------------------------------------------------------------------------
 
 myManageHook = composeAll
-    [ className =? "firefox" <&&> resource =? "Toolkit" --> doFloat -- firefox pip
-    , className =? "firefox" <&&> resource =? "Browser" --> doFloat
-    , className =? "firefox" <&&> resource =? "Places" --> doFloat
-    , className =? "Galculator" --> doRectFloat (W.RationalRect (1 % 4) (1 % 2) (1 % 4) (1 % 4))
+    [ className =? "firefox" <&&> resource =? "Toolkit" --> doCenterFloat -- firefox pip
+    , className =? "firefox" <&&> resource =? "Browser" --> doFloat -- firefox about window
+    , className =? "firefox" <&&> resource =? "Places" --> doFloat -- firefox downloads window
+    , className =? "Chromium" <&&> resource =? "Picture in picture" --> doFloat
+    , className =? "Galculator" --> doCenterFloat
     , resource  =? "desktop_window" --> doIgnore
     , isFullscreen --> doFullFloat
     ] 

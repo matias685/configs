@@ -60,5 +60,5 @@ Config {
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %kbd%  %default:Master% | %cpu% | %coretemp% | %memory% | %date%          "   -- #69DFFA
+       , template = "%StdinReader% }{ %kbd% | %default:Master% | %cpu% | %coretemp% | %memory% | %date%          "   -- #69DFFA
        }
