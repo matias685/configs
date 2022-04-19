@@ -3,9 +3,11 @@
 ------------------------------------------------------------------------
 
 import XMonad hiding ( (|||) ) -- jump to layout
-import XMonad.Layout.LayoutCombinators (JumpToLayout(..), (|||)) -- jump to layout
+import XMonad.Layout.LayoutCombinators (JumpToLayout(..), (|||)) 
 import XMonad.Config.Desktop
+
 import System.Exit
+import XMonad.Operations
 import qualified XMonad.StackSet as W
 
 -- data
@@ -21,11 +23,9 @@ import System.IO (hPutStrLn) -- for xmobar
 
 -- util
 import XMonad.Util.Run (safeSpawn, unsafeSpawn, runInTerm, spawnPipe)
-import XMonad.Util.SpawnOnce
 import XMonad.Util.EZConfig (additionalKeysP, additionalMouseBindings)  
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows
-import XMonad.Util.WorkspaceCompare
 
 -- hooks
 import XMonad.Hooks.DynamicLog
@@ -37,17 +37,17 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.InsertPosition
 
 -- actions
-import XMonad.Actions.CopyWindow -- for dwm window style tagging
 import XMonad.Actions.UpdatePointer -- update mouse postion
+import XMonad.Actions.CycleWS -- cycle between workspaces
 
 -- layout 
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
+import XMonad.Layout.Gaps
 import XMonad.Layout.GridVariants
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.ThreeColumns
-import XMonad.Layout.SimpleFloat
 
 ------------------------------------------------------------------------
 -- variables
@@ -55,7 +55,7 @@ import XMonad.Layout.SimpleFloat
 
 myModMask = mod4Mask -- Sets modkey to super/windows key
 myTerminal = "urxvt" -- Sets default terminal
-myBorderWidth = 3 -- Sets border width for windows
+myBorderWidth = 2 -- Sets border width for windows
 myNormalBorderColor = "#839496"
 myFocusedBorderColor = "#268BD2"
 myppCurrent = "#268bd2"
@@ -80,7 +80,14 @@ instance UrgencyHook LibNotifyUrgencyHook where
 
         safeSpawn "notify-send" [show name, "workspace " ++ idx]
 
+-- center window
 
+centerWindow :: Window -> X ()
+centerWindow win = do
+    (_, W.RationalRect x y w h) <- floatLocation win
+    windows $ W.float win (W.RationalRect ((1 - w) / 2) ((1 - h) / 2) w h)
+    return ()
+    
 ------------------------------------------------------------------------
 -- layout
 ------------------------------------------------------------------------
@@ -138,7 +145,9 @@ myManageHook = composeAll
     , className =? "firefox" <&&> resource =? "Places" --> doFloat -- firefox downloads window
     , className =? "Chromium" <&&> resource =? "Picture in picture" --> doFloat
     , className =? "Galculator" --> doCenterFloat
+    , className =? "Pcsx2" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
+    , isDialog --> doCenterFloat
     , isFullscreen --> doFullFloat
     ] 
     
@@ -147,17 +156,17 @@ myManageHook = composeAll
 ------------------------------------------------------------------------
 
 myKeys =
-    [("M-" ++ m ++ k, windows $ f i)
-        | (i, k) <- zip (myWorkspaces) (map show [1 :: Int ..])
-        , (f, m) <- [(W.view, ""), (W.shift, "S-"), (copy, "S-C-")]]
-    ++
-    [("S-C-a", windows copyToAll)   -- copy window to all workspaces
-     , ("S-C-z", killAllOtherCopies)  -- kill copies of window on other workspaces
-     , ("M-S-r", spawn "xmonad --restart")
+    -- Restart/recompile xmonad
+    [  ("M-S-r", spawn "xmonad --restart")
      , ("M-C-r", spawn "xmonad --recompile")
+
+     , ("M-S-c", withFocused $ centerWindow)
+     -- Volume control
      , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
      , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-") 
      , ("<XF86AudioMute>", spawn "amixer set Master toggle")
+
+     -- App shortcuts
      , ("M-<Return>", spawn myTerminal)
      , ("M-c", kill)
      , ("M-a", sendMessage MirrorExpand)
@@ -168,16 +177,21 @@ myKeys =
      , ("M-g", sendMessage $ JumpToLayout "Grid")
      , ("M-u", sendMessage $ JumpToLayout "Column")
      , ("M-m", sendMessage $ JumpToLayout "Mirror")
-     , ("M-d", spawn "dmenu_run -h 32 -p 'run: '") -- dmenu
+     , ("M-d", spawn "dmenu_run -h 28 -p 'run: '") -- dmenu
      , ("M-x", spawn "clipmenu")
-     -- , ("M-p", spawn "rofi -show combi -modi combi") -- rofi
+     , ("M-p", spawn "rofi -show drun") -- rofi
      , ("M-e", spawn "rofi -show emoji")
      , ("M-S-e", spawn "emacsclient -c -n")
-     , ("M-i", spawn "urxvt -e htop")
+     , ("M-i", spawn (myTerminal ++ " -e htop"))
      , ("M-r", spawn "st -e lfub")
      , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
      , ("M-S-<Return>", windows W.shiftMaster) -- move window to master
      , ("M-q", spawn "pmenu")
+     , ("M-s", spawn "sh ~/scripts/screenshot.sh")
+
+     -- Move between workspaces
+     , ("M-<Page_Down>", nextWS)
+     , ("M-<Page_Up>", prevWS)
     ]
     
 
@@ -186,9 +200,9 @@ myKeys =
 ------------------------------------------------------------------------
 
 main = do
-    xmproc0 <- spawnPipe "xmobar ~/.xmonad/xmobarrc.hs"
+    xmproc0 <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
     xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh desktopConfig
-        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition End Newer <+> myManageHook <+> manageHook desktopConfig
+        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition Master Newer <+> myManageHook <+> manageHook desktopConfig
         , layoutHook         = myLayout
         , handleEventHook    = handleEventHook desktopConfig
         , workspaces         = myWorkspaces
