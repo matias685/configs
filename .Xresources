@@ -1,17 +1,23 @@
-Xft.dpi: 96
-URxvt.font: xft:Iosevka Term:size=13,xft:FontAwesome:size=12
+Xft.dpi: 120
+URxvt.font: xft:Iosevka Term:size=13,xft:FontAwesome:size=15
 URxvt.scrollBar: false
-URxvt.perl-ext-common: default,resize-font,ibeamcursor
+URxvt.internalBorder: 5
+xterm*faceName: Iosevka
+xterm*faceSize: 13
+URxvt.perl-ext-common: default,resize-font
 URxvt.keysym.C-j: resize-font:smaller
 URxvt.keysym.C-k: resize-font:bigger
 URxvt.keysym.C-equal: resize-font:reset
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+Emacs*geometry: 150x45
 ! transparency
-! URxvt.depth: 32
+URxvt.depth: 0
 ! URxvt.background: rgba:1111/1111/1111/dddd
 
 ! special
 *.foreground:   #ffffff
-*.background:   #181818
+*.background:   #111111
 *.cursorColor:  #c5c8c6
 
 ! black
