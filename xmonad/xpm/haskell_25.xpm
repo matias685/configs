@@ -1,0 +1,28 @@
+/* XPM */
+static char *haskell_25[] = {
+/* columns rows colors chars-per-pixel */
+"25 18 4 1 ",
+"  c None",
+". c #7b7b7b",
+"X c #c2c2c3",
+"o c #cc5302",
+/* pixels */
+"..... XXXXX              ",
+" ....  XXXX              ",
+"  ....  XXXX             ",
+"  ..... XXXXX            ",
+"   ....  XXXX            ",
+"    .... XXXXX  ooooooooo",
+"    ..... XXXXX ooooooooo",
+"     ....  XXXX  oooooooo",
+"      .... XXXXX         ",
+"      .... XXXXXX        ",
+"     ....  XXXXXX  oooooo",
+"    ..... XXXXXXXX oooooo",
+"    .... XXXXXXXXX  ooooo",
+"   ....  XXXX  XXXX      ",
+"  ..... XXXXX  XXXXX     ",
+"  .... XXXXX    XXXX     ",
+" ....  XXXX      XXXX    ",
+"..... XXXXX      XXXXX   "
+};
