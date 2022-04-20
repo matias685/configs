@@ -5,6 +5,7 @@ Config {
        , bgColor = "#222222"
        , fgColor = "#eeeeee"
        , position = TopW L 100
+       , iconRoot     = ".xmonad/xpm/"  -- default: "."⎋
        , commands = [ Run Cpu [ "--template", "<fc=#a9a1e1><fn=1></fn></fc> <total>%"
                               , "--Low","20"
                               , "--High","70"
@@ -60,5 +61,5 @@ Config {
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{%kbd%| %default:Master%| %cpu% | %coretemp% | %memory% | %date% |           "   -- #69DFFA
+       , template = " <icon=haskell_25.xpm/> %StdinReader% }{%kbd%| %default:Master%| %cpu% | %coretemp% | %memory% | %date% |           "   -- #69DFFA
        }

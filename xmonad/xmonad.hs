@@ -2,13 +2,13 @@
 -- import
 ------------------------------------------------------------------------
 
+-- base
 import XMonad hiding ( (|||) ) -- jump to layout
-import XMonad.Layout.LayoutCombinators (JumpToLayout(..), (|||)) 
-import XMonad.Config.Desktop
-
 import System.Exit
 import XMonad.Operations
+import XMonad.Config.Desktop
 import qualified XMonad.StackSet as W
+import System.IO (hPutStrLn) -- for xmobar
 
 -- data
 import Data.Char (isSpace)
@@ -17,9 +17,6 @@ import Data.Monoid
 import Data.Maybe (isJust)
 import Data.Ratio ((%)) -- for video
 import qualified Data.Map as M
-
--- system
-import System.IO (hPutStrLn) -- for xmobar
 
 -- util
 import XMonad.Util.Run (safeSpawn, unsafeSpawn, runInTerm, spawnPipe)
@@ -33,17 +30,20 @@ import XMonad.Hooks.ManageDocks (avoidStruts, docksStartupHook, manageDocks, Tog
 import XMonad.Hooks.EwmhDesktops -- to show workspaces in application switchers
 import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog,  doFullFloat, doCenterFloat, doRectFloat) 
 import XMonad.Hooks.Place (placeHook, withGaps, smart)
-import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.InsertPosition
 
 -- actions
 import XMonad.Actions.UpdatePointer -- update mouse postion
 import XMonad.Actions.CycleWS -- cycle between workspaces
 
--- layout 
+-- layout
+import XMonad.Layout.LayoutCombinators (JumpToLayout(..), (|||)) 
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
+import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
+import XMonad.Layout.SimplestFloat
+import XMonad.Layout.Simplest
 import XMonad.Layout.Gaps
 import XMonad.Layout.GridVariants
 import XMonad.Layout.ResizableTile
@@ -56,8 +56,8 @@ import XMonad.Layout.ThreeColumns
 myModMask = mod4Mask -- Sets modkey to super/windows key
 myTerminal = "urxvt" -- Sets default terminal
 myBorderWidth = 2 -- Sets border width for windows
-myNormalBorderColor = "#839496"
-myFocusedBorderColor = "#268BD2"
+myNormalBorderColor = "#3b444b"
+myFocusedBorderColor = "#9400d3"
 myppCurrent = "#268bd2"
 myppVisible = "#268bd2"
 myppHidden = "#268bd2"
@@ -66,19 +66,6 @@ myppTitle = "#eeeeee"
 myppUrgent = "#DC322F"
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
-
-------------------------------------------------------------------------
--- desktop notifications -- dunst package required
-------------------------------------------------------------------------
-
-data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
-
-instance UrgencyHook LibNotifyUrgencyHook where
-    urgencyHook LibNotifyUrgencyHook w = do
-        name     <- getName w
-        Just idx <- fmap (W.findTag w) $ gets windowset
-
-        safeSpawn "notify-send" [show name, "workspace " ++ idx]
 
 -- center window
 
@@ -92,7 +79,7 @@ centerWindow win = do
 -- layout
 ------------------------------------------------------------------------
 
-myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol)
+myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
   where
      -- full
      full = renamed [Replace "Full"] 
@@ -121,10 +108,12 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol)
      -- threecol
      threecol = renamed [Replace "Column"]
           $ avoidStruts
-	  $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True
-	  $ ThreeColMid 1 (3/100) (1/2)
+          $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True
+          $ ThreeColMid 1 (3/100) (1/2)
 
-	  
+     -- floats
+     float = renamed [Replace "Float"]
+          $ limitWindows 20 simplestFloat
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -142,13 +131,13 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol)
 myManageHook = composeAll
     [ className =? "firefox" <&&> resource =? "Toolkit" --> doCenterFloat -- firefox pip
     , className =? "firefox" <&&> resource =? "Browser" --> doFloat -- firefox about window
-    , className =? "firefox" <&&> resource =? "Places" --> doFloat -- firefox downloads window
+    , className =? "firefox" <&&> resource =? "Places" --> doCenterFloat -- firefox downloads window
     , className =? "Chromium" <&&> resource =? "Picture in picture" --> doFloat
     , className =? "Galculator" --> doCenterFloat
     , className =? "Pcsx2" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , isDialog --> doCenterFloat
-    , isFullscreen --> doFullFloat
+    -- , isFullscreen --> doFullFloat
     ] 
     
 ------------------------------------------------------------------------
@@ -160,14 +149,12 @@ myKeys =
     [  ("M-S-r", spawn "xmonad --restart")
      , ("M-C-r", spawn "xmonad --recompile")
 
-     , ("M-S-c", withFocused $ centerWindow)
      -- Volume control
      , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
      , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-") 
      , ("<XF86AudioMute>", spawn "amixer set Master toggle")
 
-     -- App shortcuts
-     , ("M-<Return>", spawn myTerminal)
+     -- Window Manager commands
      , ("M-c", kill)
      , ("M-a", sendMessage MirrorExpand)
      , ("M-z", sendMessage MirrorShrink)
@@ -177,21 +164,27 @@ myKeys =
      , ("M-g", sendMessage $ JumpToLayout "Grid")
      , ("M-u", sendMessage $ JumpToLayout "Column")
      , ("M-m", sendMessage $ JumpToLayout "Mirror")
+     , ("M-S-c", withFocused $ centerWindow)
+     , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
+     , ("M-S-<Return>", windows W.shiftMaster) -- move window to master
+     
+     -- Program shortcuts
+     , ("M-<Return>", spawn myTerminal)
      , ("M-d", spawn "dmenu_run -h 28 -p 'run: '") -- dmenu
      , ("M-x", spawn "clipmenu")
      , ("M-p", spawn "rofi -show drun") -- rofi
      , ("M-e", spawn "rofi -show emoji")
+     , ("M-w", spawn "firefox")
      , ("M-S-e", spawn "emacsclient -c -n")
-     , ("M-i", spawn (myTerminal ++ " -e htop"))
+     , ("M-i", spawn (myTerminal ++ " -e btop"))
      , ("M-r", spawn "st -e lfub")
-     , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
-     , ("M-S-<Return>", windows W.shiftMaster) -- move window to master
      , ("M-q", spawn "pmenu")
      , ("M-s", spawn "sh ~/scripts/screenshot.sh")
+     , ("M-S-k", spawn (myTerminal ++ " -e calcurse"))
 
      -- Move between workspaces
-     , ("M-<Page_Down>", nextWS)
-     , ("M-<Page_Up>", prevWS)
+     , ("M-n", nextWS)
+     , ("M-S-n", prevWS)
     ]
     
 
@@ -201,7 +194,7 @@ myKeys =
 
 main = do
     xmproc0 <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
-    xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh desktopConfig
+    xmonad $ ewmh desktopConfig
         { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition Master Newer <+> myManageHook <+> manageHook desktopConfig
         , layoutHook         = myLayout
         , handleEventHook    = handleEventHook desktopConfig
