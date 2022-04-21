@@ -2,7 +2,7 @@ Config {
        font = "xft:Iosevka:size=12:bold:antialias=true"
        , additionalFonts = [ "xft:Font Awesome 6 Free Solid:size=11" ]
        , allDesktops = True
-       , bgColor = "#222222"
+       , bgColor = "#181818"
        , fgColor = "#eeeeee"
        , position = TopW L 100
        , iconRoot     = ".xmonad/xpm/"  -- default: "."⎋
@@ -52,14 +52,14 @@ Config {
                                                    -- charged status
                                                    , "-i"   , "<fc=#98be65>Charged</fc>"
                                          ] 50
-		    , Run Volume "default" "Master" [] 5
+		    , Run Volume "default" "Master" ["-t", "<fn=1></fn> <volume>%"] 5
             -- keyboard layout indicator
-            , Run Kbd            [ ("fi"                , "<fc=#eeeeee,#222222> FI </fc>")
-                                 , ("us"                , "<fc=#eeeeee,#222222> US </fc>")
+            , Run Kbd            [ ("fi"                , "<fc=#eeeeee,#181818> <fn=1></fn> FI </fc>")
+                                 , ("us"                , "<fc=#eeeeee,#181818> <fn=1></fn> US </fc>")
                                  ]
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " <icon=haskell_25.xpm/> %StdinReader% }{%kbd%| %default:Master%| %cpu% | %coretemp% | %memory% | %date% |           "   -- #69DFFA
+       , template = " <icon=haskell_25.xpm/> %StdinReader% }{%kbd%| %default:Master% | %cpu% | %coretemp% | %memory% | %date% |           "   -- #69DFFA
        }

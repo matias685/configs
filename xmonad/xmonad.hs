@@ -1,3 +1,19 @@
+{-
+   __   _____  ___                      _
+   \ \ / /|  \/  |                     | |
+    \ V / | .  . | ___  _ __   __ _  __| |
+    /   \ | |\/| |/ _ \| '_ \ / _` |/ _` |
+   / /^\ \| |  | | (_) | | | | (_| | (_| |
+   \/   \/\_|  |_/\___/|_| |_|\__,_|\__,_|
+
+Available at: https://github.com/matias685/xmonad
+
+First Edit: 18april2022 (I think?)
+Last Edit: 20april2022
+
+-}
+
+
 ------------------------------------------------------------------------
 -- import
 ------------------------------------------------------------------------
@@ -18,7 +34,7 @@ import Data.Maybe (isJust)
 import Data.Ratio ((%)) -- for video
 import qualified Data.Map as M
 
--- util
+-- utils
 import XMonad.Util.Run (safeSpawn, unsafeSpawn, runInTerm, spawnPipe)
 import XMonad.Util.EZConfig (additionalKeysP, additionalMouseBindings)  
 import XMonad.Util.NamedScratchpad
@@ -36,18 +52,19 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Actions.UpdatePointer -- update mouse postion
 import XMonad.Actions.CycleWS -- cycle between workspaces
 
--- layout
+-- layouts
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.GridVariants
+import XMonad.Layout.ThreeColumns
+import XMonad.Layout.SimplestFloat
+
+-- layout modifiers
+import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LayoutCombinators (JumpToLayout(..), (|||)) 
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
 import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
-import XMonad.Layout.SimplestFloat
-import XMonad.Layout.Simplest
-import XMonad.Layout.Gaps
-import XMonad.Layout.GridVariants
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.ThreeColumns
 
 ------------------------------------------------------------------------
 -- variables
@@ -57,7 +74,7 @@ myModMask = mod4Mask -- Sets modkey to super/windows key
 myTerminal = "urxvt" -- Sets default terminal
 myBorderWidth = 2 -- Sets border width for windows
 myNormalBorderColor = "#3b444b"
-myFocusedBorderColor = "#9400d3"
+myFocusedBorderColor = "#cc5302"
 myppCurrent = "#268bd2"
 myppVisible = "#268bd2"
 myppHidden = "#268bd2"
@@ -67,7 +84,9 @@ myppUrgent = "#DC322F"
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
--- center window
+------------------------------------------------------------------------
+-- center window variable
+------------------------------------------------------------------------
 
 centerWindow :: Window -> X ()
 centerWindow win = do
@@ -79,6 +98,11 @@ centerWindow win = do
 -- layout
 ------------------------------------------------------------------------
 
+-- makes setting spacingRaw faster to write
+mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
+mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
+
+
 myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
   where
      -- full
@@ -89,26 +113,29 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
      tiled = renamed [Replace "Tall"]
            -- $ smartBorders
            $ avoidStruts
-           $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
+           $ mySpacing 8
            $ ResizableTall 1 (3/100) (1/2) []
 
      -- mirror
      mirror = renamed [Replace "Mirror"]
+          -- $ smartBorders
           $ avoidStruts
           $ Mirror
-          $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
+          $ mySpacing 8
           $ Tall 1 (3/100) (3/5)
 
      -- grid
      grid = renamed [Replace "Grid"]
+          -- $ smartBorders
           $ avoidStruts
-          $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True 
+          $ mySpacing 8
           $ Grid (16/10)
 
      -- threecol
      threecol = renamed [Replace "Column"]
+          -- $ smartBorders
           $ avoidStruts
-          $ spacingRaw False (Border 5 5 5 5) True (Border 5 5 5 5) True
+          $ mySpacing 8
           $ ThreeColMid 1 (3/100) (1/2)
 
      -- floats
@@ -125,7 +152,7 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
      delta   = 3/100
 
 ------------------------------------------------------------------------
--- Window rules:
+-- Window rules
 ------------------------------------------------------------------------
 
 myManageHook = composeAll
@@ -135,13 +162,14 @@ myManageHook = composeAll
     , className =? "Chromium" <&&> resource =? "Picture in picture" --> doFloat
     , className =? "Galculator" --> doCenterFloat
     , className =? "Pcsx2" --> doFloat
+    , className =? "Steam" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , isDialog --> doCenterFloat
     -- , isFullscreen --> doFullFloat
     ] 
     
 ------------------------------------------------------------------------
--- Key bindings. Add, modify or remove key bindings here.
+-- Key bindings
 ------------------------------------------------------------------------
 
 myKeys =
@@ -164,6 +192,7 @@ myKeys =
      , ("M-g", sendMessage $ JumpToLayout "Grid")
      , ("M-u", sendMessage $ JumpToLayout "Column")
      , ("M-m", sendMessage $ JumpToLayout "Mirror")
+     , ("M-S-f", sendMessage $ JumpToLayout "Float")
      , ("M-S-c", withFocused $ centerWindow)
      , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
      , ("M-S-<Return>", windows W.shiftMaster) -- move window to master
@@ -180,7 +209,7 @@ myKeys =
      , ("M-r", spawn "st -e lfub")
      , ("M-q", spawn "pmenu")
      , ("M-s", spawn "sh ~/scripts/screenshot.sh")
-     , ("M-S-k", spawn (myTerminal ++ " -e calcurse"))
+     , ("M-S-s", spawn "flameshot gui")
 
      -- Move between workspaces
      , ("M-n", nextWS)
