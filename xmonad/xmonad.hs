@@ -9,7 +9,7 @@
 Available at: https://github.com/matias685/xmonad
 
 First Edit: 18april2022 (I think?)
-Last Edit: 20april2022
+Last Edit: 21april2022
 
 -}
 
@@ -74,16 +74,33 @@ myModMask = mod4Mask -- Sets modkey to super/windows key
 myTerminal = "urxvt" -- Sets default terminal
 myBorderWidth = 2 -- Sets border width for windows
 myNormalBorderColor = "#3b444b"
-myFocusedBorderColor = "#cc5302"
+myFocusedBorderColor = "#6a5acd"
 myppCurrent = "#268bd2"
 myppVisible = "#268bd2"
 myppHidden = "#268bd2"
 myppHiddenNoWindows = "#93A1A1"
 myppTitle = "#eeeeee"
 myppUrgent = "#DC322F"
-myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
+------------------------------------------------------------------------
+-- clickable workspaces
+------------------------------------------------------------------------
+
+xmobarEscape :: String -> String
+xmobarEscape = concatMap doubleLts
+  where
+        doubleLts '<' = "<<"
+        doubleLts x   = [x]
+
+myWorkspaces :: [String]
+myWorkspaces = clickable . (map xmobarEscape)
+               $ ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+  where
+        clickable l = [ "<action=xdotool key super+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
+                      (i,ws) <- zip [1..9] l,
+                      let n = i ]
+		      
 ------------------------------------------------------------------------
 -- center window variable
 ------------------------------------------------------------------------
@@ -113,7 +130,7 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
      tiled = renamed [Replace "Tall"]
            -- $ smartBorders
            $ avoidStruts
-           $ mySpacing 8
+           $ mySpacing 12
            $ ResizableTall 1 (3/100) (1/2) []
 
      -- mirror
@@ -121,24 +138,24 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
           -- $ smartBorders
           $ avoidStruts
           $ Mirror
-          $ mySpacing 8
+          $ mySpacing 12
           $ Tall 1 (3/100) (3/5)
 
      -- grid
      grid = renamed [Replace "Grid"]
           -- $ smartBorders
           $ avoidStruts
-          $ mySpacing 8
+          $ mySpacing 12
           $ Grid (16/10)
 
      -- threecol
      threecol = renamed [Replace "Column"]
           -- $ smartBorders
           $ avoidStruts
-          $ mySpacing 8
+          $ mySpacing 12
           $ ThreeColMid 1 (3/100) (1/2)
 
-     -- floats
+     -- float
      float = renamed [Replace "Float"]
           $ limitWindows 20 simplestFloat
 
@@ -161,8 +178,9 @@ myManageHook = composeAll
     , className =? "firefox" <&&> resource =? "Places" --> doCenterFloat -- firefox downloads window
     , className =? "Chromium" <&&> resource =? "Picture in picture" --> doFloat
     , className =? "Galculator" --> doCenterFloat
-    , className =? "Pcsx2" --> doFloat
+    , className =? "Pcsx2" --> doCenterFloat
     , className =? "Steam" --> doFloat
+    , className =? "Gcolor3" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , isDialog --> doCenterFloat
     -- , isFullscreen --> doFullFloat
@@ -205,7 +223,7 @@ myKeys =
      , ("M-e", spawn "rofi -show emoji")
      , ("M-w", spawn "firefox")
      , ("M-S-e", spawn "emacsclient -c -n")
-     , ("M-i", spawn (myTerminal ++ " -e btop"))
+     , ("M-C-h", spawn (myTerminal ++ " -e htop"))
      , ("M-r", spawn "st -e lfub")
      , ("M-q", spawn "pmenu")
      , ("M-s", spawn "sh ~/scripts/screenshot.sh")
@@ -224,7 +242,7 @@ myKeys =
 main = do
     xmproc0 <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
     xmonad $ ewmh desktopConfig
-        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition Master Newer <+> myManageHook <+> manageHook desktopConfig
+        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition End Newer <+> myManageHook <+> manageHook desktopConfig
         , layoutHook         = myLayout
         , handleEventHook    = handleEventHook desktopConfig
         , workspaces         = myWorkspaces

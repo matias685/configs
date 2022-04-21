@@ -1,5 +1,5 @@
 Config {
-       font = "xft:Iosevka:size=12:bold:antialias=true"
+       font = "xft:Iosevka:size=12:bold:antialias=true,Source Han Sans HC,Noto Color Emoji" --latin/asian fonts and emojis
        , additionalFonts = [ "xft:Font Awesome 6 Free Solid:size=11" ]
        , allDesktops = True
        , bgColor = "#181818"
@@ -57,9 +57,9 @@ Config {
             , Run Kbd            [ ("fi"                , "<fc=#eeeeee,#181818> <fn=1></fn> FI </fc>")
                                  , ("us"                , "<fc=#eeeeee,#181818> <fn=1></fn> US </fc>")
                                  ]
-                    , Run StdinReader
+                    , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " <icon=haskell_25.xpm/> %StdinReader% }{%kbd%| %default:Master% | %cpu% | %coretemp% | %memory% | %date% |           "   -- #69DFFA
+       , template = " <icon=haskell_25.xpm/> %UnsafeStdinReader% }{%kbd%| %default:Master% | %cpu% | %coretemp% | %memory% | %date% |           "   -- #69DFFA
        }
