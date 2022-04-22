@@ -2,11 +2,20 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (toggle-scroll-bar -1) 
-
+(setq-default c-basic-offset 4)
+(pixel-scroll-precision-mode)
 ;; Open dashboard when using emacsclient
-(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
 (setq help-window-select t)  ; Switch to help buffers automatically
+
+;; disable scroll bar on new emacsclient frames
+(defun my/disable-scroll-bars (frame)
+  (modify-frame-parameters frame
+                           '((vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
+
 
 ;; Show file name in title
 (setq frame-title-format
@@ -32,7 +41,7 @@
 
 ;; Default font
 (add-to-list 'default-frame-alist
-             '(font . "Iosevka 12"))
+             '(font . "Iosevka 11"))
 
 (require 'use-package)
 (require 'package)
@@ -44,14 +53,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("e27c391095dcee30face81de5c8354afb2fbe69143e1129109a16d17871fc055" "795d2a48b56beaa6a811bcf6aad9551878324f81f66cac964f699871491710fa" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
+   '("c414f69a02b719fb9867b41915cb49c853489930be280ce81385ff7b327b4bf6" "02fff7eedb18d38b8fd09a419c579570673840672da45b77fde401d8708dc6b5" "e27c391095dcee30face81de5c8354afb2fbe69143e1129109a16d17871fc055" "795d2a48b56beaa6a811bcf6aad9551878324f81f66cac964f699871491710fa" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
  '(elfeed-goodies/entry-pane-position 'bottom)
  '(elfeed-goodies/entry-pane-size 0.6)
  '(elfeed-goodies/feed-source-column-width 50)
  '(elfeed-goodies/powerline-default-separator 'bar)
  '(elfeed-goodies/tag-column-width 20)
  '(package-selected-packages
-   '(beacon elfeed-goodies elfeed vertico orderless pulsar centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard)))
+   '(vterm sudo-edit beacon elfeed-goodies elfeed vertico orderless pulsar centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard))
+ '(warning-suppress-types '((comp))))
 ;; '(pulsar-pulse-functions
 ;;   '(isearch-repeat-forward isearch-repeat-backward recenter-top-bottom move-to-window-line-top-bottom reposition-window other-window delete-window delete-other-windows forward-page backward-page scroll-up-command scroll-down-command windmove-right windmove-left windmove-up windmove-down windmove-swap-states-right windmove-swap-states-left windmove-swap-states-up windmove-swap-states-down tab-new tab-close tab-next org-next-visible-heading org-previous-visible-heading org-forward-heading-same-level org-backward-heading-same-level outline-backward-same-level outline-forward-same-level outline-next-visible-heading outline-previous-visible-heading outline-up-heading)))
 
@@ -78,7 +88,7 @@
   (require 'all-the-icons))
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode -1))
 (use-package modus-themes
   :config
   (load-theme 'modus-operandi t))
@@ -178,6 +188,8 @@
         ("https://www.reddit.com/r/emacs.rss" emacs reddit)
 	("https://www.reddit.com/r/CommunismMemes.rss" memes reddit)
 	("https://xkcd.com/rss.xml" comics)
+	("https://www.debian.org/security/dsa" linux debian security)
+	("https://lwn.net/headlines/rss" linux)
 	("https://thisweek.gnome.org/index.xmlw" linux)))
 (use-package elfeed-goodies
   :ensure t
