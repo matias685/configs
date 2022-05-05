@@ -4,11 +4,13 @@
 (toggle-scroll-bar -1) 
 (setq-default c-basic-offset 4)
 (pixel-scroll-precision-mode)
+;;(setq pixel-scroll-precision-large-scroll-height 20.0)
+;;(setq pixel-scroll-precision-interpolation-factor 20)
 ;; Open dashboard when using emacsclient
 (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
 (setq help-window-select t)  ; Switch to help buffers automatically
-
+(when window-system (set-frame-size (selected-frame) 140 40)) ; Set default window size
 ;; disable scroll bar on new emacsclient frames
 (defun my/disable-scroll-bars (frame)
   (modify-frame-parameters frame
@@ -35,17 +37,23 @@
 (setq completion-cycle-threshold t)
 (setq make-backup-files nil) ; stop creating ~ files
 
+;; Create a new line below current
+(global-set-key (kbd "<C-return>") (lambda ()
+                   (interactive)
+                   (end-of-line)
+                   (newline-and-indent)))
+
 ;; Focus on the new frame
 (defadvice split-window (after split-window-after activate)
   (other-window 1))
 
 ;; Default font
 (add-to-list 'default-frame-alist
-             '(font . "Iosevka 11"))
+             '(font . "Iosevka 9"))
 
-(require 'use-package)
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(require 'use-package)
 (package-initialize)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -60,10 +68,16 @@
  '(elfeed-goodies/powerline-default-separator 'bar)
  '(elfeed-goodies/tag-column-width 20)
  '(package-selected-packages
-   '(vterm sudo-edit beacon elfeed-goodies elfeed vertico orderless pulsar centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard))
+   '(emms vterm sudo-edit elfeed-goodies elfeed vertico orderless pulsar centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard))
  '(warning-suppress-types '((comp))))
 ;; '(pulsar-pulse-functions
 ;;   '(isearch-repeat-forward isearch-repeat-backward recenter-top-bottom move-to-window-line-top-bottom reposition-window other-window delete-window delete-other-windows forward-page backward-page scroll-up-command scroll-down-command windmove-right windmove-left windmove-up windmove-down windmove-swap-states-right windmove-swap-states-left windmove-swap-states-up windmove-swap-states-down tab-new tab-close tab-next org-next-visible-heading org-previous-visible-heading org-forward-heading-same-level org-backward-heading-same-level outline-backward-same-level outline-forward-same-level outline-next-visible-heading outline-previous-visible-heading outline-up-heading)))
+
+(setq calendar-location-name "Kouvola, FI") 
+(setq calendar-latitude 60.86)
+(setq calendar-longitude 26.70)
+(require 'theme-changer)
+(change-theme 'modus-operandi 'modus-vivendi)
 
 ;; Org-presentation
 (require 'org-tree-slide)
@@ -89,9 +103,7 @@
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode -1))
-(use-package modus-themes
-  :config
-  (load-theme 'modus-operandi t))
+(use-package modus-themes)
 
 ;; emoji
 ;;(use-package emojify
@@ -125,54 +137,7 @@
   :ensure t
   :custom (completion-styles '(orderless)))
 
-;; Pulsar package
-;;(require 'pulsar)
-;;(pulsar-setup)
-;;(customize-set-variable
-;; 'pulsar-pulse-functions
-;; '(isearch-repeat-forward
-;;   isearch-repeat-backward
-;;   recenter-top-bottom
-;;   move-to-window-line-top-bottom
-;;   reposition-window
-;;   other-window
-;;   delete-window
-;;   delete-other-windows
-;;   forward-page
-;;   backward-page
-;;   scroll-up-command
-;;   scroll-down-command
-;;   windmove-right
-;;   windmove-left
-;;   windmove-up
-;;   windmove-down
-;;   windmove-swap-states-right
-;;   windmove-swap-states-left
-;;   windmove-swap-states-up
-;;   windmove-swap-states-down
-;;   tab-new
-;;   tab-close
-;;   tab-next
-;;   org-next-visible-heading
-;;   org-previous-visible-heading
-;;   org-forward-heading-same-level
-;;   org-backward-heading-same-level
-;;   outline-backward-same-level
-;;   outline-forward-same-level
-;;   outline-next-visible-heading
-;;   outline-previous-visible-heading
-;;   outline-up-heading))
-;;(setq pulsar-pulse t)
-;;(setq pulsar-delay 0.055)
-;;(setq pulsar-face 'pulsar-cyan)
-;;
-;;(let ((map global-map))
-;;  (define-key map (kbd "C-x l") 'pulsar-pulse-line))
-(beacon-mode 1)
-(setq beacon-push-mark 70)
-(setq beacon-color "#00FFFF")
-(let ((map global-map))
-  (define-key map (kbd "C-x l") #'beacon-blink))
+
 ;; RSS reader
   (use-package elfeed
     :ensure t
@@ -188,7 +153,6 @@
         ("https://www.reddit.com/r/emacs.rss" emacs reddit)
 	("https://www.reddit.com/r/CommunismMemes.rss" memes reddit)
 	("https://xkcd.com/rss.xml" comics)
-	("https://www.debian.org/security/dsa" linux debian security)
 	("https://lwn.net/headlines/rss" linux)
 	("https://thisweek.gnome.org/index.xmlw" linux)))
 (use-package elfeed-goodies
