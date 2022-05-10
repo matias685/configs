@@ -3,21 +3,20 @@
     follow = keyboard
     width = 200
     height = 350
-    offset = 10x35
+    offset = 25x55
     padding = 2
     horizontal_padding = 2
-    transparency = 25
     font = Iosevka 12
     format = "<b>%s</b>\n%b"
 
 [urgency_low]
-    background = "#1d2021"
-    foreground = "#928374"
+    background = "#181818"
+    foreground = "#eeeeee"
     timeout = 3
 
 [urgency_normal]
-    foreground = "#ebdbb2"
-    background = "#458588"
+    foreground = "#eeeeee"
+    background = "#181818"
     timeout = 5
 
 [urgency_critical]
