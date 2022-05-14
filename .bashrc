@@ -1,22 +1,19 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 HISTCONTROL=ignoreboth
 
-shopt -s histappend
+shopt -s checkwinsize autocd cdspell dirspell histappend
 
 export EDITOR="vim"
+export VISUAL='emacs'
 
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-shopt -s checkwinsize
-
-PATH=$PATH:~/.local/bin/
-PATH=$PATH:~/.local/bin/statusbar/
+PATH=$PATH:$HOME/.local/bin/
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 	xterm-color|*-256color) color_prompt=yes;;
@@ -42,12 +39,24 @@ else
 fi
 unset color_prompt force_color_prompt
 
-# ls aliases
-alias ls='ls --quoting-style=literal -pq --time-style=iso --color=auto --group-directories-first --show-control-chars'
-alias lsl='ls -nph'
-alias lsla='ls -Anph'
-alias lsa='ls -A'
-alias ls.='ls -A | egrep "^\."'
+# Syntax color in manpages
+export LESS_TERMCAP_mb=$'\E[1;31m'
+export LESS_TERMCAP_md=$'\E[1;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[1;33m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[1;32m'
+
+# Adding colors
+alias \
+	grep='grep --color=auto' \
+	egrep='egrep --color=auto' \
+	ls='ls -hpq --color=always --group-directories-first' \
+	la='ls -a --color=always --group-directories-first' \
+	ll='ls -lhpq --color=always --group-directories-first' \
+	lla='ls -lah --color=always --group-directories-first' \
+	l.='ls -a | egrep "^\."'
 
 # color output for grep
 alias grep='grep -sI --color=auto'
@@ -55,33 +64,25 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # verbose commands
-alias rm='rm -v'
-alias cp='cp -v'
-alias mv='mv -v'
+alias \
+      rm='rm -v' \
+      cp='cp -v' \
+      mv='mv -v' \
+      mkd='mkdir -pv'
 
 # directory shortcuts
-alias dl='cd "$HOME"/Downloads'
-alias conf='cd "$HOME"/.config'
-
-#cd command
-alias ..='cd ..'
-
-# xbps
-alias xin='doas xbps-install -S'
-alias xrm='doas xbps-remove -R'
-alias xup='doas xbps-install -Su'
-alias xq='xbps-query -Rs'
-alias pkgi='xbps-query -S'
-alias pkgs='xbps-query -l | wc -l'
-alias lspkg='xbps-query -l'
-
-# poweroff and reboot
-alias poweroff='loginctl poweroff'
-alias reboot='loginctl reboot'
+alias \
+    dl='cd $HOME/Downloads' \
+    conf='cd $HOME/.config'
 
 # vim
-alias sudoedit='doas vim'
-alias v='vim'
+alias \
+    v='vim' \
+    vimrc='vim ~/.vimrc'
 
-alias nnn='nnn -Dde'
-alias moc='mocp'
+# Edit configs
+alias \
+    bashrc='vim ~/.bashrc'
+
+# bash completion
+source /etc/profile.d/bash_completion.sh
