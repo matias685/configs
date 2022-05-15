@@ -9,7 +9,7 @@
 Available at: https://github.com/matias685/xmonad
 
 First Edit: 18april2022 (I think?)
-Last Edit: 21april2022
+Last Edit: 15may2022
 
 -}
 
@@ -71,14 +71,14 @@ import XMonad.Layout.Spacing
 ------------------------------------------------------------------------
 
 myModMask = mod4Mask -- Sets modkey to super/windows key
-myTerminal = "urxvt" -- Sets default terminal
+myTerminal = "kitty" -- Sets default terminal
 myBorderWidth = 2 -- Sets border width for windows
 myNormalBorderColor = "#3b444b"
-myFocusedBorderColor = "#6a5acd"
+myFocusedBorderColor = "#3b6585"
 myppCurrent = "#268bd2"
 myppVisible = "#268bd2"
 myppHidden = "#268bd2"
-myppHiddenNoWindows = "#93A1A1"
+myppHiddenNoWindows = "#eeeeee"
 myppTitle = "#eeeeee"
 myppUrgent = "#DC322F"
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
@@ -130,7 +130,7 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
      tiled = renamed [Replace "Tall"]
            -- $ smartBorders
            $ avoidStruts
-           $ mySpacing 12
+           $ mySpacing 8
            $ ResizableTall 1 (3/100) (1/2) []
 
      -- mirror
@@ -138,21 +138,21 @@ myLayout = (tiled ||| mirror |||  full ||| grid ||| threecol ||| float)
           -- $ smartBorders
           $ avoidStruts
           $ Mirror
-          $ mySpacing 12
+          $ mySpacing 8
           $ Tall 1 (3/100) (3/5)
 
      -- grid
      grid = renamed [Replace "Grid"]
           -- $ smartBorders
           $ avoidStruts
-          $ mySpacing 12
+          $ mySpacing 8
           $ Grid (16/10)
 
      -- threecol
      threecol = renamed [Replace "Column"]
           -- $ smartBorders
           $ avoidStruts
-          $ mySpacing 12
+          $ mySpacing 8
           $ ThreeColMid 1 (3/100) (1/2)
 
      -- float
@@ -196,8 +196,8 @@ myKeys =
      , ("M-C-r", spawn "xmonad --recompile")
 
      -- Volume control
-     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
-     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-") 
+     , ("<XF86AudioRaiseVolume>", spawn "pulsemixer --change-volume +5")
+     , ("<XF86AudioLowerVolume>", spawn "pulsemixer --change-volume -5") 
      , ("<XF86AudioMute>", spawn "amixer set Master toggle")
 
      -- Window Manager commands
@@ -217,14 +217,14 @@ myKeys =
      
      -- Program shortcuts
      , ("M-<Return>", spawn myTerminal)
-     , ("M-d", spawn "dmenu_run -h 28 -p 'run: '") -- dmenu
+     , ("M-d", spawn "dmenu_run -p 'run: '") -- dmenu
      , ("M-x", spawn "clipmenu")
      , ("M-p", spawn "rofi -show drun") -- rofi
      , ("M-e", spawn "rofi -show emoji")
      , ("M-w", spawn "firefox")
      , ("M-S-e", spawn "emacsclient -c -n")
      , ("M-C-h", spawn (myTerminal ++ " -e htop"))
-     , ("M-r", spawn "st -e lfub")
+     , ("M-r", spawn "kitty -e lfub")
      , ("M-q", spawn "pmenu")
      , ("M-s", spawn "sh ~/scripts/screenshot.sh")
      , ("M-S-s", spawn "flameshot gui")
@@ -242,7 +242,7 @@ myKeys =
 main = do
     xmproc0 <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
     xmonad $ ewmh desktopConfig
-        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition End Newer <+> myManageHook <+> manageHook desktopConfig
+        { manageHook = ( isFullscreen --> doFullFloat ) <+> manageDocks <+>  insertPosition Master Newer <+> myManageHook <+> manageHook desktopConfig
         , layoutHook         = myLayout
         , handleEventHook    = handleEventHook desktopConfig
         , workspaces         = myWorkspaces
@@ -253,10 +253,10 @@ main = do
         , focusedBorderColor = myFocusedBorderColor
         , logHook = dynamicLogWithPP xmobarPP  
                         { ppOutput = hPutStrLn xmproc0 
-                        , ppCurrent = xmobarColor myppCurrent "" . wrap "[" "]" -- Current workspace in xmobar
+                        , ppCurrent = xmobarColor myppCurrent "" . wrap "" "" -- Current workspace in xmobar
                         , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
-                        , ppHidden = xmobarColor myppHidden "" . wrap "" ""   -- Hidden workspaces in xmobar
-                        , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
+                        -- , ppHidden = xmobarColor myppHidden "" . wrap "" ""   -- Hidden workspaces in xmobar
+                        -- , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
                         , ppTitle = xmobarColor  myppTitle "" . shorten 120     -- Title of active window in xmobar
                         , ppSep =  "<fc=#586E75> | </fc>"                     -- Separators in xmobar
                         , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace
