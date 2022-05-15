@@ -4,11 +4,13 @@ unsetopt nomatch
 stty stop undef
 
 export EDITOR='vim'
+export VISUAL='emacs'
+export SUDO_EDITOR='vim'
 
 # Custom prompt
-#PROMPT='[%F{white}%~%B%f%b] $ '
 #PROMPT='%~ %# '
-PROMPT='%# '
+#PROMPT='%F{111}%m:%F{2}%~ $%f '
+PROMPT='%F{2}%~ $%f '
 # History in cache directory
 HISTSIZE=10000
 SAVEHIST=10000
@@ -45,11 +47,18 @@ alias \
 alias \
 	grep='grep --color=auto' \
 	egrep='egrep --color=auto' \
-	ls='ls -hpq --color=always --group-directories-first' \
-	la='ls -a --color=always --group-directories-first' \
-	ll='ls -lhpq --color=always --group-directories-first' \
-	lla='ls -lah --color=always --group-directories-first' \
-	l.='ls -a | egrep "^\."'
+#	ls='ls -hpq --color=always --group-directories-first' \
+#	la='ls -a --color=always --group-directories-first' \
+#	ll='ls -lhpq --color=always --group-directories-first' \
+#	lla='ls -lah --color=always --group-directories-first' \
+#	l.='ls -a | egrep "^\."'
+
+alias \
+    	ls='exa --icons -h --color=always --group-directories-first' \
+	la='exa --icons -a --color=always --group-directories-first' \
+	ll='exa --icons -lh --color=always --group-directories-first' \
+	lla='exa --icons -lah --color=always --group-directories-first' \
+	l.='exa --icons -a | egrep "^\."'
 
 # cd alias
 alias \
@@ -66,9 +75,9 @@ alias \
 
 # pacman alias 
 alias \
-       	pacin='doas pacman -S' \
-	pacrm='doas pacman -Rns' \
-	pacup='doas pacman -Syu' \
+       	pacin='sudo pacman -S' \
+	pacrm='sudo pacman -Rns' \
+	pacup='sudo pacman -Syu' \
 	pacs='pacman -Ss' \
 	pacq='pacman -Q' \
 	pacqi='pacman -Qi' \
@@ -91,3 +100,4 @@ alias \
 
 # Syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.zprofile
