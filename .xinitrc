@@ -1,5 +1,20 @@
 #!/bin/sh
 
-#[ -f ~/.xprofile ] && . ~/.xprofile
+# source .profile on startup
+if [ -r ~/.profile ]; then . ~/.profile; fi
 
-exec bspwm
+# set blank time
+xset s 1800 1800
+
+# startup programs
+xrdb $HOME/.Xresources
+setbg
+picom &
+dunst &
+lxpolkit &
+xsettingsd &
+clipmenud &
+
+# window manager
+slstatus &
+exec dwm
