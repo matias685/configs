@@ -10,11 +10,14 @@ xset s 1800 1800
 xrdb $HOME/.Xresources
 setbg
 picom &
+redshift &
 dunst &
 lxpolkit &
+udiskie -an &
 xsettingsd &
 clipmenud &
+#unclutter &
 
 # window manager
 slstatus &
-exec dwm
+exec dbus-launch --sh-syntax --exit-with-session dwm
