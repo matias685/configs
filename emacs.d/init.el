@@ -6,11 +6,35 @@
 
 ;; remove bars
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+(menu-bar-mode 1)
 (toggle-scroll-bar -1)
 
 ; disable bell sound
 (setq ring-bell-function 'ignore)
+
+;; kill buffer without confirmation
+(global-set-key [(control x) (k)] 'kill-this-buffer)
+
+;; remove the message in scratch buffer
+(setq initial-scratch-message "")
+
+;; indentation using smart-tabs-mode
+(setq-default tab-width 4)
+
+(defun bf-pretty-print-xml-region (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+        (backward-char) (insert "\n"))
+      (indent-region begin end))
+    (message "Ah, much better!"))
 
 ; set indentation width to 4 spaces in c files
 (setq-default c-basic-offset 4)
@@ -22,6 +46,7 @@
 (global-set-key (kbd "C-x m") 'emms)
 (global-set-key (kbd "C-/") 'undo)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "<f8>") 'global-hl-line-mode)
 (global-set-key (kbd "<f9>") 'display-line-numbers-mode)
 ; Create a new line below current
 (global-set-key (kbd "<C-return>") (lambda ()
@@ -55,7 +80,7 @@
 ;        ,(format " - GNU Emacs %s" emacs-version)))
 ;        ,(format " - GNU Emacs %s")))
 
-;(setq dired-listing-switches "--group-directories-first -la")
+(setq dired-listing-switches "--group-directories-first -lha")
 
 ; Set the first day of the week to Monday
 (setq calendar-week-start-day 1)
@@ -96,8 +121,13 @@
 (change-theme 'modus-operandi 'modus-vivendi)
 
 ; dired settings
+(global-auto-revert-mode 1)
+;; Also auto refresh dired, but be quiet about it
+(setq dired-kill-when-opening-new-dired-buffer t) ; only one dired buffer
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 (setq dired-recursive-deletes 'always)
-(diredp-toggle-find-file-reuse-dir 1)
+;(diredp-toggle-find-file-reuse-dir 1)
 (use-package dired
   :hook (dired-mode . dired-hide-details-mode)
   :config
@@ -110,7 +140,8 @@
   :ensure t
   :after dired
   :bind (:map dired-mode-map
-              ("TAB" . dired-subtree-toggle)))
+              ("TAB" . dired-subtree-toggle)
+              ("b" . dired-up-directory)))
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 ; automatically show css colors
@@ -133,7 +164,7 @@
   (require 'all-the-icons))
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 0))
+  :init (doom-modeline-mode 1))
 (use-package modus-themes)
 
 ; EMMS basic configuration
@@ -217,7 +248,7 @@
  '(elfeed-goodies/tag-column-width 20)
  '(org-table-shrunk-column-indicator nil)
  '(package-selected-packages
-   '(emms dired-subtree dired+ diredfl all-the-icons-dired vterm sudo-edit elfeed-goodies elfeed vertico orderless centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard))
+   '(dired-single haskell-mode emms dired-subtree dired+ diredfl all-the-icons-dired vterm sudo-edit elfeed-goodies elfeed vertico orderless centered-window org-tree-slide marginalia org-bullets magit modus-themes use-package rainbow-mode org doom-modeline dashboard))
  '(warning-suppress-types '((comp))))
 ;; '(pulsar-pulse-functions
 ;;   '(isearch-repeat-forward isearch-repeat-backward recenter-top-bottom move-to-window-line-top-bottom reposition-window other-window delete-window delete-other-windows forward-page backward-page scroll-up-command scroll-down-command windmove-right windmove-left windmove-up windmove-down windmove-swap-states-right windmove-swap-states-left windmove-swap-states-up windmove-swap-states-down tab-new tab-close tab-next org-next-visible-heading org-previous-visible-heading org-forward-heading-same-level org-backward-heading-same-level outline-backward-same-level outline-forward-same-level outline-next-visible-heading outline-previous-visible-heading outline-up-heading)))
