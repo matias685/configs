@@ -4,6 +4,10 @@
 (require 'use-package)
 (package-initialize)
 
+; Default font
+(add-to-list 'default-frame-alist
+             '(font . "Iosevka 12"))
+
 ;; kill vterm buffer without confirmation
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 ;; kill buffer without confirmation
@@ -11,15 +15,51 @@
 ;; don't ask about processes when closing emacs
 (setq confirm-kill-processes nil)
 
-;; stop creating ~ files
-(setq make-backup-files nil)
-
 ;; remove bars
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
 (set-fringe-mode 0)
 (setq set-fringe-mode 0)
+
+; change all prompts to y or n
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq ad-redefinition-action 'accept)
+(setq completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+(setq completion-cycle-threshold t)
+
+(setq make-backup-files nil) ; stop creating ~ files
+
+(setq auto-save-default nil)
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil) ;; spaces instead of tabs
+(setq-default standard-indent 4)
+(setq c-basic-offset tab-width)
+(setq-default electric-indent-inhibit t)
+(setq backward-delete-char-untabify-method 'nil)
+
+; Enable switching between frames with shift+arrow keys
+(windmove-default-keybindings)
+(setq windmove-wrap-around t)
+
+; disable bell sound
+(setq ring-bell-function 'ignore)
+
+;; remove the message in scratch buffer
+(setq initial-scratch-message "")
+
+; Show file name in title
+;;(setq frame-title-format
+;;      `((buffer-file-name "%b")))
+;        ,(format " - GNU Emacs %s" emacs-version)))
+;        ,(format " - GNU Emacs %s")))
+(setq frame-title-format "%b")
+
+(setq dired-listing-switches "--group-directories-first -lha")
+
+; Set the first day of the week to Monday
+(setq calendar-week-start-day 1)
 
 ;; show tabs at top
 (tab-bar-mode 1)
@@ -49,14 +89,6 @@
 (setq pulsar-face 'pulsar-blue)
 (setq pulsar-highlight-face 'pulsar-yellow)
 (pulsar-global-mode 1)
-
-; disable bell sound
-(setq ring-bell-function 'ignore)
-
-;; remove the message in scratch buffer
-(setq initial-scratch-message "")
-;; indentation using smart-tabs-mode
-(setq-default tab-width 4)
 
 (defun bf-pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -108,37 +140,6 @@ by using nxml's indentation rules."
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
 
-; Enable switching between frames with shift+arrow keys
-(windmove-default-keybindings)
-(setq windmove-wrap-around t)
-
-; Show file name in title
-;;(setq frame-title-format
-;;      `((buffer-file-name "%b")))
-;        ,(format " - GNU Emacs %s" emacs-version)))
-;        ,(format " - GNU Emacs %s")))
-(setq frame-title-format "%b")
-
-(setq dired-listing-switches "--group-directories-first -lha")
-
-; Set the first day of the week to Monday
-(setq calendar-week-start-day 1)
-
-; change all prompts to y or n
-(fset 'yes-or-no-p 'y-or-n-p)
-(setq ad-redefinition-action 'accept)
-(setq completion-ignore-case t)
-(setq read-file-name-completion-ignore-case t)
-(setq completion-cycle-threshold t)
-(setq make-backup-file nil) ; stop creating ~ files
-(setq auto-save-default nil)
-(setq-default tab-width 4)
-(setq-default indent-tabs-mode nil) ;; spaces instead of tabs
-(setq-default standard-indent 4)
-(setq c-basic-offset tab-width)
-(setq-default electric-indent-inhibit t)
-(setq backward-delete-char-untabify-method 'nil)
-
 ;; add line numbers on code files
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 ;(add-hook 'text-mode-hook 'display-line-numbers-mode)
@@ -159,10 +160,6 @@ by using nxml's indentation rules."
 
 ;; automatically focus on man page
 (setq Man-notify-method 'aggressive)
-
-; Default font
-(add-to-list 'default-frame-alist
-             '(font . "Iosevka 12"))
 
 ;; change theme based on time
 ;;(setq calendar-location-name "Kouvola, FI") 
@@ -297,6 +294,7 @@ by using nxml's indentation rules."
  '(custom-safe-themes
    '("857a606b0b1886318fe4567cc073fcb1c3556d94d101356da105a4e993112dc8" "ff1607d931035f2496e58566ee567b44a0f10be2f3f55d8e2956af16a2431d94" "22eef4c1484c8caf5dad32054830080e76f2076ec8e6b950b3f0b70ba5c988fe" "68a665225842bc1dec619da72f6d2e05d5c46fc64a70199272ebc21cab74477f" "289474b5a9be8e9aad6b217b348f69af6d9c6e86a17c271ab4f5b67d13cf2322" "f1a116f53d9e685023ebf435c80a2fecf11a1ecc54bb0d540bda1f5e2ae0ae58" "5b89b65f5e9e30d98af9d851297ee753e28528676e8ee18a032934a12762a5f2" "c0d992b42529cc61d03cbb8668df5c928d179ab5babbd21c9673b9aa47707f90" "6d741c51b4fd0dd4211fe4134c55b95018e94765e0dfd27771a2f54642ba11f8" "89feed18f1d627659e68e457852ffff5bd63c5103f5d23fbc949db121d4ce742" "8e8152ac5b1c2a4f55928ca03a6e6d93647b9a9900f7613e433092b202191963" "b9e222c23b493f3f0a452e06135fb108f062c31e4adc00842ce2f9e3c3c9368e" "5a6854c6ad74c99ced6e42ed19f0856d2feba54fdaafe05e15fec509a1d1bd7a" "0bfc1a9df8943554fa36c6ac38e6149c58a484273caddf5f78404c7b2edde196" "4a288765be220b99defaaeb4c915ed783a9916e3e08f33278bf5ff56e49cbc73" "5a611788d47c1deec31494eb2bb864fde402b32b139fe461312589a9f28835db" "dad40020beea412623b04507a4c185079bff4dcea20a93d8f8451acb6afc8358" "a0415d8fc6aeec455376f0cbcc1bee5f8c408295d1c2b9a1336db6947b89dd98" "e0628ee6c594bc7a29bedc5c57f0f56f28c5b5deaa1bc60fc8bd4bb4106ebfda" "c414f69a02b719fb9867b41915cb49c853489930be280ce81385ff7b327b4bf6" "02fff7eedb18d38b8fd09a419c579570673840672da45b77fde401d8708dc6b5" "e27c391095dcee30face81de5c8354afb2fbe69143e1129109a16d17871fc055" "795d2a48b56beaa6a811bcf6aad9551878324f81f66cac964f699871491710fa" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
  '(doom-modeline-time t)
+ '(echo-keystrokes 0.3)
  '(elfeed-db-directory "/home/matias/.emacs.d/elfeed")
  '(elfeed-goodies/entry-pane-position 'right)
  '(elfeed-goodies/entry-pane-size 0.5)
@@ -306,10 +304,11 @@ by using nxml's indentation rules."
  '(elfeed-search-filter "@2-week-ago")
  '(elfeed-show-entry-delete 'elfeed-goodies/delete-pane)
  '(elfeed-show-entry-switch 'elfeed-goodies/switch-pane)
+ '(keyboard-coding-system 'utf-8-unix)
  '(line-spacing 2)
  '(org-table-shrunk-column-indicator nil)
  '(package-selected-packages
-   '(pulsar notmuch markdown-mode ef-themes transpose-frame nov olivetti dired-single haskell-mode emms dired-subtree dired+ diredfl all-the-icons-dired vterm sudo-edit elfeed-goodies elfeed vertico orderless centered-window org-tree-slide marginalia org-bullets magit use-package rainbow-mode org doom-modeline dashboard))
+   '(pulsar markdown-mode ef-themes transpose-frame nov olivetti dired-single haskell-mode emms dired-subtree dired+ diredfl all-the-icons-dired vterm sudo-edit elfeed-goodies elfeed vertico orderless centered-window org-tree-slide marginalia org-bullets magit use-package rainbow-mode org doom-modeline dashboard))
  '(tab-bar-close-button-show nil)
  '(tab-bar-format
    '(tab-bar-format-history tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
