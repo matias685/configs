@@ -23,16 +23,14 @@
 
 ;; show tabs at top
 (tab-bar-mode 1)
-
 (use-package time
   :commands world-clock
   :config
-  (setq display-time-format "%d/%m/%Y %H:%M")
+  (setq display-time-format "%a %d %b, %H:%M ")
   (setq display-time-interval 60)
   (setq display-time-mail-directory nil)
   (setq display-time-default-load-average nil)
   :hook (after-init . display-time-mode))
-
 (eval-after-load "tab-bar"
 (defun tab-bar-format-align-right ()
   "Align the rest of tab bar items to the right."
@@ -43,7 +41,6 @@
          (str (propertize " " 'display `(space :align-to (- right ,hpos 1)))))
     `((align-right menu-item ,str ignore)))))
 
-
 (global-hl-line-mode 1)
 
 (setq pulsar-pulse t)
@@ -51,7 +48,6 @@
 (setq pulsar-iterations 10)
 (setq pulsar-face 'pulsar-blue)
 (setq pulsar-highlight-face 'pulsar-yellow)
-
 (pulsar-global-mode 1)
 
 ; disable bell sound
@@ -300,6 +296,7 @@ by using nxml's indentation rules."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("857a606b0b1886318fe4567cc073fcb1c3556d94d101356da105a4e993112dc8" "ff1607d931035f2496e58566ee567b44a0f10be2f3f55d8e2956af16a2431d94" "22eef4c1484c8caf5dad32054830080e76f2076ec8e6b950b3f0b70ba5c988fe" "68a665225842bc1dec619da72f6d2e05d5c46fc64a70199272ebc21cab74477f" "289474b5a9be8e9aad6b217b348f69af6d9c6e86a17c271ab4f5b67d13cf2322" "f1a116f53d9e685023ebf435c80a2fecf11a1ecc54bb0d540bda1f5e2ae0ae58" "5b89b65f5e9e30d98af9d851297ee753e28528676e8ee18a032934a12762a5f2" "c0d992b42529cc61d03cbb8668df5c928d179ab5babbd21c9673b9aa47707f90" "6d741c51b4fd0dd4211fe4134c55b95018e94765e0dfd27771a2f54642ba11f8" "89feed18f1d627659e68e457852ffff5bd63c5103f5d23fbc949db121d4ce742" "8e8152ac5b1c2a4f55928ca03a6e6d93647b9a9900f7613e433092b202191963" "b9e222c23b493f3f0a452e06135fb108f062c31e4adc00842ce2f9e3c3c9368e" "5a6854c6ad74c99ced6e42ed19f0856d2feba54fdaafe05e15fec509a1d1bd7a" "0bfc1a9df8943554fa36c6ac38e6149c58a484273caddf5f78404c7b2edde196" "4a288765be220b99defaaeb4c915ed783a9916e3e08f33278bf5ff56e49cbc73" "5a611788d47c1deec31494eb2bb864fde402b32b139fe461312589a9f28835db" "dad40020beea412623b04507a4c185079bff4dcea20a93d8f8451acb6afc8358" "a0415d8fc6aeec455376f0cbcc1bee5f8c408295d1c2b9a1336db6947b89dd98" "e0628ee6c594bc7a29bedc5c57f0f56f28c5b5deaa1bc60fc8bd4bb4106ebfda" "c414f69a02b719fb9867b41915cb49c853489930be280ce81385ff7b327b4bf6" "02fff7eedb18d38b8fd09a419c579570673840672da45b77fde401d8708dc6b5" "e27c391095dcee30face81de5c8354afb2fbe69143e1129109a16d17871fc055" "795d2a48b56beaa6a811bcf6aad9551878324f81f66cac964f699871491710fa" "0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))
+ '(doom-modeline-time t)
  '(elfeed-db-directory "/home/matias/.emacs.d/elfeed")
  '(elfeed-goodies/entry-pane-position 'right)
  '(elfeed-goodies/entry-pane-size 0.5)
@@ -332,10 +329,6 @@ by using nxml's indentation rules."
  '(markdown-header-face-1 ((t (:inherit modus-themes-heading-1 :height 1.8))))
  '(markdown-header-face-2 ((t (:inherit modus-themes-heading-2 :height 1.5))))
  '(markdown-header-face-3 ((t (:inherit bold :foreground "#437000" :height 1.4))))
- '(mindre-default ((t (:foreground "#2e3338"))) t)
- '(mindre-default-i ((t (:background "#F5F5F5" :foreground "#2e3338"))) t)
- '(mindre-faded ((t (:foreground "#B0BEC5"))) t)
- '(mindre-strong-i ((t (:background "#F5F5F5" :foreground "#2e3338" :weight bold))) t)
  '(org-level-1 ((t (:inherit outline-1 :height 1.7))))
  '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
  '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
