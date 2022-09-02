@@ -3,14 +3,13 @@ setopt autocd
 unsetopt nomatch
 stty stop undef
 
-export EDITOR='vim'
+export EDITOR='nvim'
 export VISUAL='emacs'
-export SUDO_EDITOR='vim'
+export SUDO_EDITOR='nvim'
+export PATH=$HOME/.local/bin:$PATH
 
 # Custom prompt
-#PROMPT='%~ %# '
-#PROMPT='%F{111}%m:%F{2}%~ $%f '
-PROMPT='%F{2}%~ $%f '
+PROMPT='%~ λ '
 # History in cache directory
 HISTSIZE=10000
 SAVEHIST=10000
@@ -23,7 +22,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zmodload zsh/complist
 compinit
 _comp_options+=(globdots)     # Include hidden files.
-
 
 # Syntax color in manpages
 export LESS_TERMCAP_mb=$'\E[1;31m'
@@ -38,7 +36,7 @@ export LESS_TERMCAP_us=$'\E[1;32m'
 
 # Adding verbosity
 alias \
-       	cp='cp -v' \
+    cp='cp -v' \
 	rm='rm -v' \
 	mv='mv -v' \
 	mkd='mkdir -pv'
@@ -47,57 +45,37 @@ alias \
 alias \
 	grep='grep --color=auto' \
 	egrep='egrep --color=auto' \
-#	ls='ls -hpq --color=always --group-directories-first' \
-#	la='ls -a --color=always --group-directories-first' \
-#	ll='ls -lhpq --color=always --group-directories-first' \
-#	lla='ls -lah --color=always --group-directories-first' \
-#	l.='ls -a | egrep "^\."'
+	ls='ls -hpq --color=always --group-directories-first' \
+	la='ls -a --color=always --group-directories-first' \
+	ll='ls -lhpq --color=always --group-directories-first' \
+	lla='ls -lah --color=always --group-directories-first' \
+	l.='ls -a | egrep "^\."'
 
-alias \
-    	ls='exa --icons -h --color=always --group-directories-first' \
-	la='exa --icons -a --color=always --group-directories-first' \
-	ll='exa --icons -lh --color=always --group-directories-first' \
-	lla='exa --icons -lah --color=always --group-directories-first' \
-	l.='exa --icons -a | egrep "^\."'
+# sudo alias
+alias sudo='sudo '
 
 # cd alias
 alias \
-       	c='cd ~/.config' \
-	b='cd ~/.local/bin' \
-	d='cd ~/.local/src/dwm'
+   	c='cd ~/.config' \
+	b='cd ~/.local/bin'
 
 # app alias
 alias \
-	e='$EDITOR' \
-       	v='vim' \
-	vim='vim' \
-	nnn='nnn -Dde'
-
-# pacman alias 
-alias \
-       	pacin='sudo pacman -S' \
-	pacrm='sudo pacman -Rns' \
-	pacup='sudo pacman -Syu' \
-	pacs='pacman -Ss' \
-	pacq='pacman -Q' \
-	pacqi='pacman -Qi' \
-	paco='pacman -Qtdq'
+    e='$EDITOR' \
+    v='nvim' \
+    vim='nvim' \
+    nnn='nnn -Dde' \
+    yt='yt-dlp --embed-metadata -i' \
+    yta='yt-dlp --embed-metadata -i -x -f bestaudio/best'
 
 # Edit configs
 alias \
-	zshrc='vim ~/.zshrc' \
-	vimrc='vim ~/.vimrc' \
-	cfs='vim ~/.config/sway/config' \
-	cfi3='vim ~/.config/i3/config' \
-	cfb='vim ~/.config/bspwm/bspwmrc' \
-	cfbar='vim ~/.config/polybar/config' \
-	cfk='vim ~/.config/sxhkd/sxhkdrc'
+	zshrc='nvim ~/.zshrc' \
+	vimrc='nvim ~/.config/nvim/init.vim' \
 
 # Set theme
 alias \
 	light="gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'" \
 	dark="gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'"
 
-# Syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $HOME/.zprofile
+source $HOME/.zprofile 
