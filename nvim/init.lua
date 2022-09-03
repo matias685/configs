@@ -2,11 +2,9 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug 'junegunn/goyo.vim'
 Plug 'lilydjwg/colorizer'
--- Plug 'feline-nvim/feline.nvim'
 Plug 'windwp/nvim-autopairs'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
--- Plug 'navarasu/onedark.nvim'
 Plug 'aktersnurra/no-clown-fiesta.nvim'
 vim.call('plug#end')
 
