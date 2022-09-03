@@ -30,7 +30,7 @@ vim.opt.relativenumber = false
 vim.opt.wrap = false
 vim.opt.showmode = false
 vim.opt.signcolumn = 'no'
-vim.opt.cursorline = false
+vim.opt.cursorline = true
 
 vim.opt.termguicolors = true
 
