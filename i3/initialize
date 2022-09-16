@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -r ~/.xprofile ]; then . ~/.xprofile; fi
+
+xset s 1800 1800 -dpms
+xset r rate 400 50
+
 setbg
 picom &
 dunst &
