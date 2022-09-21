@@ -2,16 +2,16 @@
 set $mod Mod4
 set $term foot
 floating_modifier $mod
-font pango:Iosevka 10
-default_border pixel 2
-default_floating_border pixel 2
+font pango:Iosevka 15
+default_border pixel 3
+default_floating_border pixel 3
 
 #Gaps
-gaps inner 15
-gaps outer 0
+gaps inner 20
 
 # Set wallpaper
-output "*" bg $HOME/Pictures/Wallpapers/708805.jpg fill
+output "*" bg /home/matias/Pictures/walls/1663357334105090.jpg fill
+output "*" max_render_time 2
 
 # Hide cursor
 seat * hide_cursor 4000
@@ -19,33 +19,38 @@ seat * hide_cursor when-typing enable
 
 # Set keyboard
 input * {
-    xkb_layout "fi"
+    xkb_layout "us,fi"
     xkb_variant ","
-    xkb_options "grp:alt_shift_toggle"
+    xkb_options "grp:caps_toggle"
+}
+input type:keyboard {
+    repeat_delay 400
+    repeat_rate 50
 }
 
 # Statusbar
 bar {
-        swaybar_command waybar
-        }
+    swaybar_command waybar
 }
 
 # Window colors
 # class                  border   backgr.  text     indic.   child_border
-client.focused           #0088CC  #000000  #FFFFFF  #0088CC  #0088CC 
-client.focused_inactive  #222222  #000000  #888888  #222222  #222222
-client.unfocused         #222222  #000000  #555555  #222222  #222222
+client.focused           #540c00  #540c00  #FFFFFF  #540c00  #540c00
+client.focused_inactive  #222222  #222222  #FFFFFF  #222222  #222222
+client.unfocused         #555555  #222222  #FFFFFF  #222222  #222222
 client.urgent            #222222  #000000  #ff0000  #222222  #222222
 client.placeholder       #222222  #000000  #000000  #222222  #222222
 
 client.background        #000000
 
 # Window rules
-for_window [class="^Pcmanfm$"] floating enable
 for_window [class="vlc"] floating enable
-for_window [class="^Spotify$"] floating enable
 for_window [window_role="About"] floating enable
 for_window [class="^Gimp-2.10"] floating enable
+for_window [title="About Mozilla Firefox"] floating enable
+for_window [title="Library"] floating enable
+for_window [app_id="com.usebottles.bottles"] floating enable
+for_window [app_id="^firefox$"] max_render_time 4
 
 #KEY BINDINGS
 
@@ -53,17 +58,20 @@ for_window [class="^Gimp-2.10"] floating enable
 bindsym $mod+Return exec $term
 bindsym $mod+c kill
 bindsym $mod+d exec wofi --show drun 
-bindsym $mod+q exec $HOME/scripts/wofi-power.sh
+bindsym $mod+q exec wofi-power.sh
 bindsym $mod+Ctrl+e exec rofi -show emoji -modi emoji
 bindsym $mod+Shift+Ctrl+l exec ~/scripts/lock
 bindsym $mod+Shift+s exec grim $HOME/Pictures/Wallpapers/$(date +'%s_grim.png')
-bindsym $mod+r exec kitty ranger
-bindsym $mod+Shift+u move scratchpad
-bindsym $mod+u scratchpad show
+bindsym $mod+r exec $term lfub
+bindsym $mod+Ctrl+m exec $term btop
+bindsym $mod+Shift+t move scratchpad
+bindsym $mod+t scratchpad show
+bindsym $mod+Shift+p exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+bindsym $mod+x exec clipman pick -t wofi
 
 # Change gaps
-bindsym $mod+z gaps inner current plus 5
-bindsym $mod+Shift+z gaps inner current minus 5
+bindsym $mod+z gaps inner all plus 5
+bindsym $mod+Shift+z gaps inner all minus 5
 
 # Window focus
 bindsym $mod+h focus left
@@ -80,7 +88,8 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # change split direction
-bindsym $mod+t split t
+bindsym $mod+b split h
+bindsym $mod+v split v
 
 # Switch to fullscreen
 bindsym $mod+f fullscreen toggle
@@ -92,17 +101,16 @@ bindsym $mod+e layout toggle split
 bindsym $mod+space floating toggle
 
 # Resize windows
-bindsym $mod+Ctrl+j resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+k resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+h resize grow width 10 px or 10 ppt
+# RESIZE
+bindsym $mod+y resize shrink height 5 px or 5 ppt
+bindsym $mod+u resize grow height 5 px or 5 ppt
+bindsym $mod+i resize shrink width 5 px or 5 ppt
+bindsym $mod+o resize grow width 5 px or 5 ppt
 
 # Volume control
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec pulsemixer --change-volume +5
+bindsym XF86AudioLowerVolume exec  pulsemixer --change-volume -5
+bindsym XF86AudioMute exec pulsemixer --toggle-mute
 
 # Workspaces
 set $ws1 "1"
@@ -127,8 +135,8 @@ bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 bindsym $mod+Home workspace number $ws1
 bindsym $mod+End workspace number $ws10
-bindsym $mod+Prior workspace prev 
-bindsym $mod+Next workspace next
+bindsym $mod+Shift+n workspace prev 
+bindsym $mod+n workspace next
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
@@ -141,10 +149,16 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the config file 
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r reload
 # exit sway
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+Shift+q exec swaymsg exit
 
 # Autostart
-exec_always --no-startup-id dunst &
-exec_always --no-startup-id udiskie -an &
+exec xrdb $HOME/.Xresources
+exec mako &
+exec udiskie -an &
+exec redshift &
+exec lxpolkit &
+exec wlsunset -t 5800 -T 6500 -l 60.8 -L 26.7
+exec wl-paste -t text --watch clipman store
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
