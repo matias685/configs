@@ -1,7 +1,7 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: Iosevka, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-family: Iosevka Nerd Font, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 24px;
 }
 
 window#waybar {
@@ -165,8 +165,8 @@ label:focus {
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 #custom-media {
