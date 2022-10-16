@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 set -C -f
-#IFS=$'\n'
 IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
 
 # ANSI color codes are supported.
@@ -17,7 +16,7 @@ IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
 # 2    | plain text | Display the plain content of the file
 
 # Script arguments
-FILE_PATH="${1}"         # Full path of the highlighted file
+#FILE_PATH="${1}"         # Full path of the highlighted file
 
 #FILE_EXTENSION="${FILE_PATH##*.}"
 #FILE_EXTENSION_LOWER=$(echo ${FILE_EXTENSION} | tr '[:upper:]' '[:lower:]')
@@ -35,17 +34,35 @@ image() {
 		mediainfo "$1"
 	fi
 }
+
+ifub() {
+	[ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && command -V ueberzug >/dev/null 2>&1
+}
+
 CACHE="$HOME/.cache/lf/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | awk '{print $1}'))"
 
-case "$(file --dereference --brief --mime-type -- "${FILE_PATH}")" in
-	image/*) image "$FILE_PATH" "$2" "$3" "$4" "$5" ;;
-	text/html) lynx -display_charset=utf-8 -dump "${FILE_PATH}"  ;;
-	text/troff) man ./ "${FILE_PATH}" | col -b ;;
-	text/* | */xml) bat -f "${FILE_PATH}" ;;
-	application/zip) atool --list -- "${FILE_PATH}" ;;
-        video/* | audio/* | application/octet-stream) mediainfo "${FILE_PATH}" || exit 1;;
-        */pdf) pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - ;;
-        *opendocument*) odt2txt "${FILE_PATH}" ;;
-	application/pgp-encrypted) gpg -d -- "${FILE_PATH}" ;;
+case "$(file --dereference --brief --mime-type -- "$1")" in
+	image/*) image "$1" "$2" "$3" "$4" "$5" "$1" ;;
+	text/html) lynx -width="$4" -display_charset=utf-8 -dump "$1" ;;
+	text/troff) man ./ "$1" | col -b ;;
+	text/* | */xml | application/json) bat --terminal-width "$(($4-2))" -f "$1" ;;
+	application/zip) atool --list -- "$1" ;;
+	audio/* | application/octet-stream) mediainfo "$1" || exit 1 ;;
+	application/octet-stream) mediainfo "$1" || exit 1 ;;
+	application/x-iso9660-image) mediainfo "$1" || exit 1 ;;
+	application/x-n64-rom) mediainfo "$1" || exit 1 ;;
+	application/x-gamecube-rom) mediainfo "$1" || exit 1 ;;
+	video/* )
+		CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
+		[ ! -f "$CACHE" ] && ffmpegthumbnailer -i "$1" -o "$CACHE" -s 0
+		image "$CACHE" "$2" "$3" "$4" "$5" "$1"
+		;;
+	*/pdf)
+		CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
+		[ ! -f "$CACHE.jpg" ] && pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
+		image "$CACHE.jpg" "$2" "$3" "$4" "$5" "$1"
+		;;
+	*opendocument*) odt2txt "$1" ;;
+	application/pgp-encrypted) gpg -d -- "$1" ;;
 esac
 exit 1
