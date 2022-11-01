@@ -1,42 +1,47 @@
 # i3blocks configuration file
-
+SCRIPT_DIR='/home/matias/.config/i3blocks/scripts'
 # Global properties
-separator=true
-separator_block_width=15
+separator=false
+separator_block_width=20
 
-[layout]
-command=/home/matias/.config/i3blocks/xkb_layout/xkb_layout
-font=monospace
+# Spotify icon \uF1BC
+[spotify]
+label=  
+command=~/.config/i3blocks/scripts/spotify.py
+color=#1DB954
+interval=5
+
+[keymap]
+label=⌨ 
+command=~/.config/i3blocks/scripts/xkb_layout
 interval=persist
+font_weight=regular
 markup=pango
+#border=#0d5eaf
 
-[pacman-updates]
-command=/home/matias/.config/i3blocks/arch-update/arch-update
-interval= 3600
-WATCH=^linux.* ^pacman.*
-BASE_COLOR=#5fff5f
-UPDATE_COLOR=#FFFF85
-markup=pango
-LABEL=Updates: 
-LABEL= 
 
 [cpu_usage]
-command=/home/matias/.config/i3blocks/cpu_usage/cpu_usage
-interval=10
-LABEL= 
+command=/home/matias/.config/i3blocks/scripts/cpu_usage
+interval=5
+LABEL=  
+
+[memory]
+command=/home/matias/.config/i3blocks/scripts/memory
+label=  
+interval=5
 
 [volume]
-command=/home/matias/.config/i3blocks/volume/volume
-LABEL= 
-interval=5
+command=/home/matias/.config/i3blocks/scripts/volume
+LABEL=  
+interval=once
 signal=1
 
 [date]
-label= 
+label=  
 command=date '+%d/%m/%Y'
-interval=70000
+interval=60
 
 [hour]
-label= 
+label=  
 command=date '+%H:%M '
 interval=60
