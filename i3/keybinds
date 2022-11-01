@@ -1,18 +1,13 @@
-# VOLUME KEYS
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pulsemixer --change-volume +5
-bindsym XF86AudioLowerVolume exec --no-startup-id pulsemixer --change-volume -5
-bindsym XF86AudioMute exec --no-startup-id pulsemixer --toggle
-
 # MAIN BINDINGS
 bindsym $mod+Return exec --no-startup-id $term 
 bindsym $mod+c kill
-bindsym $mod+d exec --no-startup-id dmenu_run -h 33
+bindsym $mod+d exec --no-startup-id dmenu_run -h 34
 bindsym $mod+p exec --no-startup-id rofi -show drun
 bindsym $mod+Ctrl+e exec --no-startup-id rofi -show emoji -modi emoji
 bindsym $mod+q exec --no-startup-id rofi -show power-menu -modi power-menu:rofi-power-menu
 bindsym $mod+r exec --no-startup-id $term -e lfub
-bindsym $mod+Shift+s exec --no-startup-id scrot $HOME/Pictures/Screenshots/%Y-%m-%d-%H%M%S.png
+bindsym $mod+Ctrl+m exec --no-startup-id $term -e btop
+bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+Ctrl+Shift+l exec --no-startup-id xlock
 bindsym $mod+Shift+q exec --no-startup-id pmenu
 bindsym $mod+x exec --no-startup-id clipmenu
@@ -22,8 +17,14 @@ bindsym $mod+z gaps inner current plus 5
 bindsym $mod+Shift+z gaps inner current minus 5
 
 # SCRATCHPAD
-bindsym $mod+Shift+u move scratchpad
-bindsym $mod+u scratchpad show
+bindsym $mod+Shift+grave move scratchpad
+bindsym $mod+grave scratchpad show
+
+# VOLUME KEYS
+# change volume or toggle mute
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
 
 # WINDOW FOCUS
 bindsym $mod+h focus left
@@ -61,7 +62,6 @@ bindsym $mod+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+Shift+space focus mode_toggle
 
-
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -91,15 +91,15 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+# RESIZE
+bindsym $mod+Ctrl+j resize shrink height 5 px or 5 ppt
+bindsym $mod+Ctrl+k resize grow height 5 px or 5 ppt
+bindsym $mod+Ctrl+l resize shrink width 5 px or 5 ppt
+bindsym $mod+Ctrl+h resize grow width 5 px or 5 ppt
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 
 bindsym $mod+Shift+r restart
 # exit i3 
 bindsym $mod+Shift+e exec i3-msg exit
-
-# RESIZE
-bindsym $mod+Ctrl+j resize shrink height 5 px or 5 ppt
-bindsym $mod+Ctrl+k resize grow height 5 px or 5 ppt
-bindsym $mod+Ctrl+l resize shrink width 5 px or 5 ppt
-bindsym $mod+Ctrl+h resize grow width 5 px or 5 ppt
