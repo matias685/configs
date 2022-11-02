@@ -1,25 +1,21 @@
 # terminal emulator
 super + Return
-	alacritty
+	$TERM
 
 # file manager
 super + r
-	alacritty -e ranger
-
-# graphical file manager
-super + shift + f
-    pcmanfm
+	$TERM -e lfub
 
 # web browser
-super + shift + w
+super + w
     firefox
 
 # resource monitor
-super + alt + h
-	alacritty -e htop
+super + ctrl + m
+	$TERM -e btop
 
 # clipboard
-alt + p
+super + x
 	clipmenu
 
 # screen lock 
@@ -27,16 +23,21 @@ super + F12
     lock
 
 # screenshot
-super + shift + s
-    scrot $HOME/Pictures/Screenshots/%Y-%m-%d-%H%M%S.png; notify-send 'Screenshot taken!'
+Print
+    flameshot gui
 
 # program launcher
-super + @space
+super + p
      rofi -show drun 
+super + d
+    dmenu_run -h 34
 super + e
 	rofi -show emoji
 super + ctrl + q
      rofi -show power-menu -modi power-menu:rofi-power-menu
+
+super + grave
+    scpad
 
 # increase gaps
 super + z
@@ -45,13 +46,15 @@ super + z
 super + shift + z
 	bspc config window_gap $(( $(bspc config window_gap) - 5 ))
 
-alt + 0
+super + y
 	bspc config window_gap 0
+
+super + u
+    bspc config window_gap 15
 # hide bar
 super + shift + b
-	polybar-msg cmd hide; bspc config -m focused top_padding 0
-super + b
-	polybar-msg cmd show; bspc config -m focused top_padding 25
+	{polybar-msg cmd toggle; bspc config top_padding +0 ,\
+     polybar-msg cmd toggle; bspc config top_padding 34 }
 
 # kill bspwm
 super + shift + q
@@ -102,9 +105,23 @@ super + Next
 super + Prior
     bspc desktop prev.occupied -f
 
-# set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+super + m
+      bspc node focused -t monocle
+
+super + f
+    if [ -z "$(bspc query -N -n focused.fullscreen)" ]; then \
+        bspc node focused -t fullscreen; \
+    else \
+        bspc node focused -t tiled; \
+    fi
+    
+super + @space
+    if [ -z "$(bspc query -N -n focused.floating)" ]; then \
+        bspc node focused -t floating; \
+    else \
+        bspc node focused -t tiled; \
+    fi
+
 
 # set the node flags
 super + ctrl + {m,x,y,z}
@@ -131,8 +148,8 @@ super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
 # preselect the direction
-super + ctrl + {h,j,k,l}
-	bspc node -p {west,south,north,east}
+#super + ctrl + {h,j,k,l}
+#	bspc node -p {west,south,north,east}
 
 # preselect the ratio
 super + ctrl + {1-9}
@@ -147,11 +164,11 @@ super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 # better resizing keys
-alt + h
+super + ctrl + h
 	bspc node -z right -20 0; bspc node -z left +20 0
-alt + l
+super + ctrl + l
 	bspc node -z right +20 0; bspc node -z left -20 0
-alt + k
+super + ctrl + k
 	bspc node -z top 0 +20; bspc node -z bottom 0 -20
-alt + j
+super + ctrl + j
 	bspc node -z top 0 -20; bspc node -z bottom 0 +20
